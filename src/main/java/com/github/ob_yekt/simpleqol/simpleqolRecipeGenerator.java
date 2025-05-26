@@ -73,7 +73,7 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                         } else if (inputIndex == 1) { // Wood -> Stripped Wood
                             addStonecutterRecipe(input, recipe[3], 1); // e.g., OAK_WOOD -> STRIPPED_OAK_WOOD
                         }
-                        // Existing recipes
+                        // Recipes
                         addStonecutterRecipe(input, recipe[4], 4);  // Planks
                         addStonecutterRecipe(input, recipe[5], 8);  // Slabs
                         addStonecutterRecipe(input, recipe[6], 1);  // Stairs
