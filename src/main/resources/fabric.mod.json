@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "simpleqol",
+	"version": "${version}",
+	"name": "simpleqol",
+	"description": "simple quality of life changes.",
+	"authors": [
+		"Ob'yekt"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/simpleqol/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.github.ob_yekt.simpleqol.simpleqol"
+		],
+		"client": [
+			"com.github.ob_yekt.simpleqol.SimpleqolClient"
+		],
+		"fabric-datagen": [
+			"com.github.ob_yekt.simpleqol.simpleqolDataGenerator"
+		]
+	},
+	"mixins": [
+		"simpleqol.mixins.json",
+		{
+			"config": "simpleqol.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.5",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
