@@ -3,7 +3,8 @@
 	"package": "com.github.ob_yekt.simpleqol.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"EndermanEntityMixin",
+		"SleepMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
