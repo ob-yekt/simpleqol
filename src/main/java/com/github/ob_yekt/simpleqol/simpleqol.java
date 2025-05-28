@@ -17,6 +17,9 @@ public class simpleqol implements ModInitializer {
 	public void onInitialize() {
 		LOGGER.info("Initializing simpleqol Mod");
 
+		// Initialize config
+		ConfigManager.load();
+
 		// Register server start callback to initialize TimeController with server instance
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			TimeController.init(server); // Custom day and night
@@ -26,6 +29,9 @@ public class simpleqol implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
 			simpleqolCommand.register(dispatcher);
 		});
+
+		// Phantoms
+		PhantomManager.initialize();
 
 		// Poisonous potato can now be composted
 		CompostingChanceRegistry.INSTANCE.add(Items.POISONOUS_POTATO, 0.65f);

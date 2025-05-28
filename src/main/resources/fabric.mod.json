@@ -8,8 +8,8 @@
 		"Ob'yekt"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://steamcommunity.com/id/obyekt/",
+		"sources": "https://github.com/ob-yekt/simpleqol"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/simpleqol/icon.png",
@@ -19,7 +19,7 @@
 			"com.github.ob_yekt.simpleqol.simpleqol"
 		],
 		"client": [
-			"com.github.ob_yekt.simpleqol.SimpleqolClient"
+			"com.github.ob_yekt.simpleqol.simpleqolClient"
 		],
 		"fabric-datagen": [
 			"com.github.ob_yekt.simpleqol.simpleqolDataGenerator"

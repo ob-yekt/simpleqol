@@ -16,10 +16,40 @@ public class ConfigManager {
             .resolve("simpleqol_config.json");
 
     public static class Config {
-        public boolean endermanGriefing = false;
+        // TIME
         public long dayTicks = 24000;
         public long nightTicks = 12000;
         public long tickCounter = 0;
+        // MISC
+        public boolean endermanGriefing = false;
+        // PHANTOMS
+        public int overworldPhantomSpawnWeight = 2; // 0 = disabled (doesn't disable vanilla spawning), 5 = witch weight, 10 = enderman, 100 = zombie
+        public int endPhantomSpawnWeight = 1; // Default = 1; 0 disables
+        // PHANTOM PACK SIZE
+        public int overworldPhantomMinPackSize = 1;
+        public int overworldPhantomMaxPackSize = 2;
+        public int endPhantomMinPackSize = 1;
+        public int endPhantomMaxPackSize = 1;
+        // doInsomnia
+        public boolean doInsomnia = false; // Gamerule doInsomnia adjusts phantom spawning when the player has not slept
+        // TORCHFLOWER
+        public int torchflowerBrightness = 14;
+        public int pottedTorchflowerBrightness = 14;
+        public int torchflowerStage0Brightness = 1;
+        public int torchflowerStage1Brightness = 7;
+        public int torchflowerStage2Brightness = 14;
+        // EYEBLOSSOM
+        public int openEyeblossomBrightness = 4;
+        public int closedEyeblossomBrightness = 2;
+        public int pottedOpenEyeblossomBrightness = 4;
+        public int pottedClosedEyeblossomBrightness = 2;
+        // PITCHER PLANT
+        public int pitcherPlantBrightness = 9;
+        public int pitcherCropStage0Brightness = 1;
+        public int pitcherCropStage1Brightness = 2;
+        public int pitcherCropStage2Brightness = 3;
+        public int pitcherCropStage3Brightness = 6;
+        public int pitcherCropStage4Brightness = 9;
     }
 
     private static Config config = new Config();
@@ -33,6 +63,24 @@ public class ConfigManager {
                     // Ensure tickCounter is non-negative
                     if (config.tickCounter < 0) {
                         config.tickCounter = 0;
+                    }
+                    // Ensure Overworld phantom spawn weights are non-negative
+                    if (config.overworldPhantomSpawnWeight < 0) {
+                        config.overworldPhantomSpawnWeight = 0;
+                    }
+                    // Ensure The End phantom spawn weights are non-negative
+                    if (config.endPhantomSpawnWeight < 0) {
+                        config.endPhantomSpawnWeight = 0;
+                    }
+                    // Ensure Overworld phantom pack sizes are non-negative
+                    if (config.overworldPhantomMinPackSize < 1) config.overworldPhantomMinPackSize = 1;
+                    if (config.overworldPhantomMaxPackSize < config.overworldPhantomMinPackSize) {
+                        config.overworldPhantomMaxPackSize = config.overworldPhantomMinPackSize;
+                    }
+                    // Ensure The End phantom pack sizes are non-negative
+                    if (config.endPhantomMinPackSize < 1) config.endPhantomMinPackSize = 1;
+                    if (config.endPhantomMaxPackSize < config.endPhantomMinPackSize) {
+                        config.endPhantomMaxPackSize = config.endPhantomMinPackSize;
                     }
                 }
             } catch (IOException e) {
@@ -85,5 +133,97 @@ public class ConfigManager {
 
     public static void setTickCounter(long ticks) {
         config.tickCounter = Math.max(0, ticks);
+    }
+
+    // PHANTOM CONFIGURATION
+    public static int getOverworldPhantomSpawnWeight() {
+        return config.overworldPhantomSpawnWeight;
+    }
+
+    public static int getEndPhantomSpawnWeight() {
+        return config.endPhantomSpawnWeight;
+    }
+
+    public static int getOverworldPhantomMinPackSize() {
+        return Math.max(1, config.overworldPhantomMinPackSize);
+    }
+
+    public static int getOverworldPhantomMaxPackSize() {
+        return Math.max(getOverworldPhantomMinPackSize(), config.overworldPhantomMaxPackSize);
+    }
+
+    public static int getEndPhantomMinPackSize() {
+        return Math.max(1, config.endPhantomMinPackSize);
+    }
+
+    public static int getEndPhantomMaxPackSize() {
+        return Math.max(getEndPhantomMinPackSize(), config.endPhantomMaxPackSize);
+    }
+
+    public static boolean isDoInsomniaEnabled() {
+        return config.doInsomnia;
+    }
+
+    // TORCHFLOWER
+    public static int getTorchflowerBrightness() {
+        return config.torchflowerBrightness;
+    }
+
+    public static int getTorchflowerStage0Brightness() {
+        return config.torchflowerStage0Brightness;
+    }
+
+    public static int getTorchflowerStage1Brightness() {
+        return config.torchflowerStage1Brightness;
+    }
+
+    public static int getTorchflowerStage2Brightness() {
+        return config.torchflowerStage2Brightness;
+    }
+
+    public static int getPottedTorchflowerBrightness() {
+        return config.pottedTorchflowerBrightness;
+    }
+
+    //EYEBLOSSOM
+    public static int getOpenEyeblossomBrightness() {
+        return config.openEyeblossomBrightness;
+    }
+
+    public static int getClosedEyeblossomBrightness() {
+        return config.closedEyeblossomBrightness;
+    }
+
+    public static int getPottedOpenEyeblossomBrightness() {
+        return config.pottedOpenEyeblossomBrightness;
+    }
+
+    public static int getPottedClosedEyeblossomBrightness() {
+        return config.pottedClosedEyeblossomBrightness;
+    }
+
+    // PITCHER PLANT
+    public static int getPitcherPlantBrightness() {
+        return config.pitcherPlantBrightness;
+    }
+
+    public static int getPitcherCropStage0Brightness() {
+        return config.pitcherCropStage0Brightness;
+    }
+
+    public static int getPitcherCropStage1Brightness() {
+        return config.pitcherCropStage1Brightness;
+    }
+
+    public static int getPitcherCropStage2Brightness() {
+        return config.pitcherCropStage2Brightness;
+    }
+
+    public static int getPitcherCropStage3Brightness() {
+        return config.pitcherCropStage3Brightness;
+    }
+
+    public static int getPitcherCropStage4Brightness() {
+        return config.pitcherCropStage4Brightness;
     }
 }

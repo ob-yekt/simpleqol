@@ -1,12 +1,19 @@
 {
-	"required": true,
-	"package": "com.github.ob_yekt.simpleqol.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"EndermanEntityMixin",
-		"SleepMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "com.github.ob_yekt.simpleqol.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BlocksMixin",
+    "EndermanEntityMixin",
+    "SleepMixin",
+    "SweetBerryBushBlockMixin",
+    "WorldMixin",
+    "respawn.BedBlockMixin",
+    "respawn.RespawnAnchorBlockMixin",
+    "respawn.ServerPlayerEntityMixin",
+    "respawn.WorldMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

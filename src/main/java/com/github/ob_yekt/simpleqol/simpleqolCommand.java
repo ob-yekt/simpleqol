@@ -1,7 +1,6 @@
 package com.github.ob_yekt.simpleqol;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -11,17 +10,6 @@ public class simpleqolCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("simpleqol")
                 .requires(source -> source.hasPermissionLevel(2)) // OP-only
-                .then(CommandManager.literal("allowendermangrief")
-                        .then(CommandManager.argument("enabled", BoolArgumentType.bool())
-                                .executes(ctx -> {
-                                    boolean enabled = BoolArgumentType.getBool(ctx, "enabled");
-                                    ConfigManager.setEndermanGriefing(enabled);
-                                    ctx.getSource().sendFeedback(
-                                            () -> Text.literal("Enderman griefing is now " + (enabled ? "enabled" : "disabled") + "."),
-                                            false
-                                    );
-                                    return 1;
-                                })))
                 .then(CommandManager.literal("daylength")
                         .then(CommandManager.literal("get")
                                 .executes(ctx -> {
