@@ -1,36 +1,34 @@
 package com.github.ob_yekt.simpleqol.mixin.respawn;
 
 import net.minecraft.block.BedBlock;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.RespawnAnchorBlock;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(BedBlock.class)
+@Mixin(ServerPlayerEntity.class)
 public class BedBlockMixin {
 
-    @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void preventSpawnSet(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (!world.isClient && player instanceof ServerPlayerEntity serverPlayer && !player.isSneaking()) {
-            ServerPlayerEntity.Respawn respawn = serverPlayer.getRespawn();
-            if (respawn != null && world.getBlockState(respawn.pos()).getBlock() instanceof RespawnAnchorBlock) {
-                // Allow sleeping to skip night but don't set spawn
-                player.trySleep(pos).ifLeft((reason) -> {
-                    if (reason != null) {
-                        player.sendMessage(reason.getMessage(), true);
-                    }
-                }).ifRight(unit -> {
-                    // Successfully sleeping, do nothing to prevent spawn point change
-                });
-                cir.setReturnValue(ActionResult.SUCCESS);
+    @Inject(method = "setSpawnPoint(Lnet/minecraft/server/network/ServerPlayerEntity$Respawn;Z)V", at = @At("HEAD"), cancellable = true)
+    private void preventBedSpawnPoint(ServerPlayerEntity.Respawn respawn, boolean sendMessage, CallbackInfo ci) {
+        ServerPlayerEntity player = (ServerPlayerEntity)(Object)this;
+        ServerPlayerEntity.Respawn currentRespawn = player.getRespawn();
+
+        // Check if the player has an active Respawn Anchor
+        if (currentRespawn != null) {
+            ServerWorld currentWorld = player.getServer().getWorld(currentRespawn.dimension());
+            if (currentWorld != null && currentWorld.getBlockState(currentRespawn.pos()).getBlock() instanceof RespawnAnchorBlock) {
+                // Check if the new spawn point is a bed
+                ServerWorld newWorld = player.getServer().getWorld(respawn.dimension());
+                if (newWorld != null && newWorld.getBlockState(respawn.pos()).getBlock() instanceof BedBlock) {
+                    // Prevent setting the spawn point to the bed, but allow sleeping (handled elsewhere)
+                    ci.cancel();
+                }
             }
         }
     }
