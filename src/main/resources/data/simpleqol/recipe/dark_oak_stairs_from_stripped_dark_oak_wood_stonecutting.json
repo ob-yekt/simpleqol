@@ -2,7 +2,7 @@
   "type": "minecraft:stonecutting",
   "ingredient": "minecraft:stripped_dark_oak_wood",
   "result": {
-    "count": 1,
+    "count": 2,
     "id": "minecraft:dark_oak_stairs"
   }
 }

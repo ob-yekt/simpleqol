@@ -2,7 +2,7 @@
   "type": "minecraft:stonecutting",
   "ingredient": "minecraft:stripped_crimson_stem",
   "result": {
-    "count": 1,
+    "count": 2,
     "id": "minecraft:crimson_fence"
   }
 }
