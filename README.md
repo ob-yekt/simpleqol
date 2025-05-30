@@ -9,24 +9,22 @@
 - Stonecutter supports cutting **all wood types** 🌳.
 
 ### 🌍 Simple Biome Replacement
-- Adjust the simpleqol_config.json to replace biomes
-- Default replacements include:
-    - "minecraft:stony_shore", "minecraft:beach" (replaces stony_shore with beach)
-    - "minecraft:windswept_gravelly_hills", "minecraft:windswept_hills" (replaces windswept_gravelly_hills with windswept_hills)
+- Adjust the simpleqol_config.json to replace biomes as you see fit
+- Default replacement examples include:
+    - "minecraft:stony_shore", "minecraft:beach" (**replaces stony_shore with beach**)
+    - "minecraft:windswept_gravelly_hills", "minecraft:windswept_hills" (**replaces windswept_gravelly_hills with windswept_hills**)
 
-Swap
+Set
 ```
     "biomeReplacements": {
     "minecraft:stony_shore": "minecraft:beach",
     "minecraft:windswept_gravelly_hills": "minecraft:windswept_hills"
   },
 ```
-with
+to
 ```
 "biomeReplacements": {},
 ```
-
-
 if you do not wish to replace any biomes.
 
 ### 🌞🌙 Custom Day and Night Lengths
@@ -80,5 +78,6 @@ if you do not wish to replace any biomes.
 - Configurable settings for:
     - Enderman griefing 👁️‍🗨️.
     - Night length 🌙.
+    - Fully customizable biome replacements 🌍.
     - Plant lighting levels 💡.
     - Phantom spawn rates 👻.
