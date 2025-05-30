@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 
-import com.github.ob_yekt.simpleqol.mixin.worldgen.BiomeReplacementMixin;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -59,17 +57,17 @@ public class ConfigManager {
     }
 
     public static void populateDefaults() {
-        if (config.biomeReplacements.isEmpty()) {
-            config.biomeReplacements.put("minecraft:stony_shore", "minecraft:beach");
-            config.biomeReplacements.put("minecraft:windswept_gravelly_hills", "minecraft:windswept_hills");
-            // Add more defaults as needed
-        }
+        config.biomeReplacements.put("minecraft:stony_shore", "minecraft:beach");
+        config.biomeReplacements.put("minecraft:windswept_gravelly_hills", "minecraft:windswept_hills");
+        // Add more defaults as needed
     }
 
     private static Config config = new Config();
 
     public static void load() {
-        if (Files.exists(CONFIG_PATH)) {
+        boolean isFirstGeneration = !Files.exists(CONFIG_PATH);
+
+        if (!isFirstGeneration) {
             try (Reader reader = Files.newBufferedReader(CONFIG_PATH)) {
                 Config loadedConfig = GSON.fromJson(reader, Config.class);
                 if (loadedConfig != null) {
@@ -93,11 +91,13 @@ public class ConfigManager {
             }
         }
 
-        // Always populate defaults before saving
-        populateDefaults();
+        // Populate defaults only on first config generation
+        if (isFirstGeneration) {
+            populateDefaults();
+        }
+
         save();
     }
-
 
     public static void save() {
         try {
@@ -196,7 +196,7 @@ public class ConfigManager {
         return config.pottedTorchflowerBrightness;
     }
 
-    //EYEBLOSSOM
+    // EYEBLOSSOM
     public static int getOpenEyeblossomBrightness() {
         return config.openEyeblossomBrightness;
     }
