@@ -4,9 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 
+import com.github.ob_yekt.simpleqol.mixin.worldgen.BiomeReplacementMixin;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -16,6 +20,8 @@ public class ConfigManager {
             .resolve("simpleqol_config.json");
 
     public static class Config {
+        // BIOME REPLACEMENTS
+        public Map<String, String> biomeReplacements = new HashMap<>();
         // TIME
         public long dayTicks = 24000;
         public long nightTicks = 12000;
@@ -52,6 +58,14 @@ public class ConfigManager {
         public int pitcherCropStage4Brightness = 9;
     }
 
+    public static void populateDefaults() {
+        if (config.biomeReplacements.isEmpty()) {
+            config.biomeReplacements.put("minecraft:stony_shore", "minecraft:beach");
+            config.biomeReplacements.put("minecraft:windswept_gravelly_hills", "minecraft:windswept_hills");
+            // Add more defaults as needed
+        }
+    }
+
     private static Config config = new Config();
 
     public static void load() {
@@ -60,24 +74,15 @@ public class ConfigManager {
                 Config loadedConfig = GSON.fromJson(reader, Config.class);
                 if (loadedConfig != null) {
                     config = loadedConfig;
-                    // Ensure tickCounter is non-negative
-                    if (config.tickCounter < 0) {
-                        config.tickCounter = 0;
-                    }
-                    // Ensure Overworld phantom spawn weights are non-negative
-                    if (config.overworldPhantomSpawnWeight < 0) {
-                        config.overworldPhantomSpawnWeight = 0;
-                    }
-                    // Ensure The End phantom spawn weights are non-negative
-                    if (config.endPhantomSpawnWeight < 0) {
-                        config.endPhantomSpawnWeight = 0;
-                    }
-                    // Ensure Overworld phantom pack sizes are non-negative
+
+                    // Sanitize values
+                    if (config.tickCounter < 0) config.tickCounter = 0;
+                    if (config.overworldPhantomSpawnWeight < 0) config.overworldPhantomSpawnWeight = 0;
+                    if (config.endPhantomSpawnWeight < 0) config.endPhantomSpawnWeight = 0;
                     if (config.overworldPhantomMinPackSize < 1) config.overworldPhantomMinPackSize = 1;
                     if (config.overworldPhantomMaxPackSize < config.overworldPhantomMinPackSize) {
                         config.overworldPhantomMaxPackSize = config.overworldPhantomMinPackSize;
                     }
-                    // Ensure The End phantom pack sizes are non-negative
                     if (config.endPhantomMinPackSize < 1) config.endPhantomMinPackSize = 1;
                     if (config.endPhantomMaxPackSize < config.endPhantomMinPackSize) {
                         config.endPhantomMaxPackSize = config.endPhantomMinPackSize;
@@ -87,9 +92,12 @@ public class ConfigManager {
                 e.printStackTrace();
             }
         }
-        // Always save after loading to ensure file exists and any corrections are persisted
+
+        // Always populate defaults before saving
+        populateDefaults();
         save();
     }
+
 
     public static void save() {
         try {
@@ -102,14 +110,7 @@ public class ConfigManager {
         }
     }
 
-    // Accessors - no automatic saving, caller decides when to save
-    public static boolean isEndermanGriefingAllowed() {
-        return config.endermanGriefing;
-    }
-
-    public static void setEndermanGriefing(boolean value) {
-        config.endermanGriefing = value;
-    }
+    // Accessors
 
     public static long getDayTicks() {
         return config.dayTicks;
@@ -133,6 +134,16 @@ public class ConfigManager {
 
     public static void setTickCounter(long ticks) {
         config.tickCounter = Math.max(0, ticks);
+    }
+
+    // BIOMES
+    public static Map<String, String> getBiomeReplacements() {
+        return config.biomeReplacements;
+    }
+
+    // ENDERMAN GRIEF
+    public static boolean isEndermanGriefingAllowed() {
+        return config.endermanGriefing;
     }
 
     // PHANTOM CONFIGURATION

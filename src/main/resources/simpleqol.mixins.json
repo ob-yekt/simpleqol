@@ -6,12 +6,14 @@
     "BlocksMixin",
     "EndermanEntityMixin",
     "SleepMixin",
+    "SpawnHelperMixin",
     "SweetBerryBushBlockMixin",
     "WorldMixin",
     "respawn.BedBlockMixin",
     "respawn.RespawnAnchorBlockMixin",
     "respawn.ServerPlayerEntityMixin",
-    "respawn.WorldMixin"
+    "respawn.WorldMixin",
+    "worldgen.BiomeReplacementMixin"
   ],
   "injectors": {
     "defaultRequire": 1
