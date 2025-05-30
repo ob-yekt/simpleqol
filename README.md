@@ -8,6 +8,27 @@
 - Stonecutter can now cut **normal deepslate** ⛏️.
 - Stonecutter supports cutting **all wood types** 🌳.
 
+### 🌍 Simple Biome Replacement
+- Adjust the simpleqol_config.json to replace biomes
+- Default replacements include:
+    - "minecraft:stony_shore", "minecraft:beach" (replaces stony_shore with beach)
+    - "minecraft:windswept_gravelly_hills", "minecraft:windswept_hills" (replaces windswept_gravelly_hills with windswept_hills)
+
+Swap
+```
+    "biomeReplacements": {
+    "minecraft:stony_shore": "minecraft:beach",
+    "minecraft:windswept_gravelly_hills": "minecraft:windswept_hills"
+  },
+```
+with
+```
+"biomeReplacements": {},
+```
+
+
+if you do not wish to replace any biomes.
+
 ### 🌞🌙 Custom Day and Night Lengths
 - Configure **day** and **night lengths** in real-life minutes ⏰.
     - Default: **20 minutes** (day), **10 minutes** (night).
@@ -15,7 +36,7 @@
         - `/simpleqol daylength get/set <minutes>`: View or set day length ☀️.
         - `/simpleqol nightlength get/set <minutes>`: View or set night length 🌑.
     - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
-      - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
+        - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
 
 ### ⚓ Respawn Anchor Overhaul
 - **Respawn anchors** are usable in **all dimensions** and do not explode 🚫💥.
