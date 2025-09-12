@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:warped_sign_from_stripped_warped_stem_stonecutting"
+        "recipe": "simpleqol:warped_sign_from_stripped_warped_stem_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:warped_sign_from_stripped_warped_stem_stonecutting"
+      "simpleqol:warped_sign_from_stripped_warped_stem_stonecutting"
     ]
   }
 }

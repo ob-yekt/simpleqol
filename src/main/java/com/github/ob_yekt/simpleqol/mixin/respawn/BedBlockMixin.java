@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+
 @Mixin(ServerPlayerEntity.class)
 public class BedBlockMixin {
 
@@ -21,11 +23,11 @@ public class BedBlockMixin {
 
         // Check if the player has an active Respawn Anchor
         if (currentRespawn != null) {
-            ServerWorld currentWorld = player.getServer().getWorld(currentRespawn.dimension());
+            ServerWorld currentWorld = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(currentRespawn.dimension());
             if (currentWorld != null && currentWorld.getBlockState(currentRespawn.pos()).getBlock() instanceof RespawnAnchorBlock) {
                 // Check if the new spawn point is a bed (respawn parameter is not null and is a bed)
                 if (respawn != null) {
-                    ServerWorld newWorld = player.getServer().getWorld(respawn.dimension());
+                    ServerWorld newWorld = player.getEntityWorld().getServer().getWorld(respawn.dimension());
                     if (newWorld != null && newWorld.getBlockState(respawn.pos()).getBlock() instanceof BedBlock) {
                         // Prevent setting the spawn point to the bed, but allow sleeping (handled elsewhere)
                         ci.cancel();

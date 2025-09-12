@@ -12,17 +12,20 @@ import net.minecraft.world.World;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Objects;
 
 @Mixin(RespawnAnchorBlock.class)
 public class RespawnAnchorBlockMixin {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void customOnUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit, CallbackInfoReturnable<ActionResult> cir) {
-        if (world.isClient) {
+        if (world.isClient()) {
             cir.setReturnValue(ActionResult.SUCCESS);
             return;
         }
@@ -65,7 +68,7 @@ public class RespawnAnchorBlockMixin {
                     SoundEvents.BLOCK_RESPAWN_ANCHOR_AMBIENT, SoundCategory.BLOCKS, 1.0F, 0.8F);
 
             // Check if any other players are using this same anchor
-            boolean otherPlayersUsing = world.getServer().getPlayerManager().getPlayerList().stream()
+            boolean otherPlayersUsing = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
                     .anyMatch(p -> p != serverPlayer &&
                             p.getRespawn() != null &&
                             p.getRespawn().pos().equals(pos) &&
@@ -84,12 +87,12 @@ public class RespawnAnchorBlockMixin {
 
             // If player already has a respawn anchor, handle the old one
             if (respawn != null) {
-                ServerWorld oldWorld = serverPlayer.getServer().getWorld(respawn.dimension());
+                ServerWorld oldWorld = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(respawn.dimension());
                 if (oldWorld != null && oldWorld.getBlockState(respawn.pos()).getBlock() instanceof RespawnAnchorBlock) {
                     BlockPos oldPos = respawn.pos();
 
                     // Check if other players are using the old anchor
-                    boolean othersUseOld = world.getServer().getPlayerManager().getPlayerList().stream()
+                    boolean othersUseOld = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
                             .anyMatch(p -> p != serverPlayer &&
                                     p.getRespawn() != null &&
                                     p.getRespawn().pos().equals(oldPos) &&
@@ -116,6 +119,7 @@ public class RespawnAnchorBlockMixin {
     }
 
     // Helper method to clear player spawn using reflection if needed
+    @Unique
     private void clearPlayerSpawn(ServerPlayerEntity player) {
         try {
             // Try to access the private field directly

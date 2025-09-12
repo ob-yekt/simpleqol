@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cherry_slab_from_stripped_cherry_log_stonecutting"
+        "recipe": "simpleqol:cherry_slab_from_stripped_cherry_log_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cherry_slab_from_stripped_cherry_log_stonecutting"
+      "simpleqol:cherry_slab_from_stripped_cherry_log_stonecutting"
     ]
   }
 }

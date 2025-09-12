@@ -14,7 +14,7 @@ public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance()
             .getGameDir()
-            .resolve("mods")
+            .resolve("config")
             .resolve("simpleqol_config.json");
 
     public static class Config {
@@ -26,6 +26,7 @@ public class ConfigManager {
         public long tickCounter = 0;
         // MISC
         public boolean endermanGriefing = false;
+        public boolean sweetberrybushDamage = false;
         // PHANTOMS
         public int overworldPhantomSpawnWeight = 2; // 0 = disabled (doesn't disable vanilla spawning), 5 = witch weight, 10 = enderman, 100 = zombie
         public int endPhantomSpawnWeight = 1; // Default = 1; 0 disables
@@ -144,6 +145,11 @@ public class ConfigManager {
     // ENDERMAN GRIEF
     public static boolean isEndermanGriefingAllowed() {
         return config.endermanGriefing;
+    }
+
+    // SWEET BERRY BUSH DAMAGE
+    public static boolean isSweetBerryBushDamageAllowed() {
+        return config.sweetberrybushDamage;
     }
 
     // PHANTOM CONFIGURATION

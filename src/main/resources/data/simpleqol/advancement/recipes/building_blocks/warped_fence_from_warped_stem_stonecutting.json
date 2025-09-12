@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:warped_fence_from_warped_stem_stonecutting"
+        "recipe": "simpleqol:warped_fence_from_warped_stem_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:warped_fence_from_warped_stem_stonecutting"
+      "simpleqol:warped_fence_from_warped_stem_stonecutting"
     ]
   }
 }

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Mixin(ServerPlayerEntity.class)
@@ -26,7 +27,7 @@ public class ServerPlayerEntityMixin {
             return;
         }
 
-        ServerWorld world = player.getServer().getWorld(respawn.dimension());
+        ServerWorld world = Objects.requireNonNull(player.getServer()).getWorld(respawn.dimension());
         if (world == null) {
             // Fallback to vanilla behavior if the dimension is invalid
             return;

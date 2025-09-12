@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:stripped_spruce_wood_from_spruce_wood_stonecutting"
+        "recipe": "simpleqol:stripped_spruce_wood_from_spruce_wood_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:stripped_spruce_wood_from_spruce_wood_stonecutting"
+      "simpleqol:stripped_spruce_wood_from_spruce_wood_stonecutting"
     ]
   }
 }

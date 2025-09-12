@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:dark_oak_stairs_from_stripped_dark_oak_log_stonecutting"
+        "recipe": "simpleqol:dark_oak_stairs_from_stripped_dark_oak_log_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:dark_oak_stairs_from_stripped_dark_oak_log_stonecutting"
+      "simpleqol:dark_oak_stairs_from_stripped_dark_oak_log_stonecutting"
     ]
   }
 }

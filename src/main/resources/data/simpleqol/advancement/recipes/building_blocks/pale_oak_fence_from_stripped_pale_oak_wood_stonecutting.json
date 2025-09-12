@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:pale_oak_fence_from_stripped_pale_oak_wood_stonecutting"
+        "recipe": "simpleqol:pale_oak_fence_from_stripped_pale_oak_wood_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:pale_oak_fence_from_stripped_pale_oak_wood_stonecutting"
+      "simpleqol:pale_oak_fence_from_stripped_pale_oak_wood_stonecutting"
     ]
   }
 }

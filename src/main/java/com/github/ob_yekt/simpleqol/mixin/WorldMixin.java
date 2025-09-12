@@ -17,7 +17,7 @@ public class WorldMixin {
             at = @At("TAIL"))
     private void onSetBlockState(BlockPos pos, BlockState state, int flags, int maxUpdateDepth, CallbackInfoReturnable<Boolean> cir) {
         World world = (World) (Object) this;
-        if (!world.isClient && world instanceof ServerWorld serverWorld) {
+        if (!world.isClient() && world instanceof ServerWorld serverWorld) {
             BlockState oldState = world.getBlockState(pos);
             Block block = state.getBlock();
             Block oldBlock = oldState.getBlock();

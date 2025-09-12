@@ -44,10 +44,10 @@ public class RespawnAnchorBlockMixin {
 
             // Use a more direct approach to clear the spawn point
             ServerPlayerEntity.Respawn worldSpawn = new ServerPlayerEntity.Respawn(
-                    serverPlayer.getServerWorld().getRegistryKey(),
-                    serverPlayer.getServerWorld().getSpawnPos(),
-                    serverPlayer.getServerWorld().getSpawnAngle(),
-                    false
+                    world.getRegistryKey(),
+                    world.getSpawnPos(),
+                    world.getSpawnAngle(),
+                    false // Add the missing boolean argument
             );
 
             // This should clear the player's custom spawn and revert to world spawn

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:birch_planks_from_stripped_birch_log_stonecutting"
+        "recipe": "simpleqol:birch_planks_from_stripped_birch_log_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:birch_planks_from_stripped_birch_log_stonecutting"
+      "simpleqol:birch_planks_from_stripped_birch_log_stonecutting"
     ]
   }
 }
