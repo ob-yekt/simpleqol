@@ -9,15 +9,20 @@
 ### 🪓 Stonecutter Enhancements
 - Stonecutter can now cut **normal deepslate** ⛏️.
 - Stonecutter supports cutting **all  (and wood/stripped) types** 🌳.
-- Stair crafting recipe now produces 6 stairs on the crafting table. Stairs can be cut on stonecutter for 1 of the base material e.g. 1 stone, 1 oak plank.
+- CRAFTING TABLE stair recipe now produces 6 stairs on the crafting table
+  - Stairs can be created on the stonecutter for 1 of the base material e.g. 1 stone or 1 oak plank.
+
 ### 🌞🌙 Custom Day and Night Lengths
 - Configure **day** and **night lengths** in real-life minutes ⏰.
-  - Default: **20 minutes** (day), **10 minutes** (night).
+  - Default: **30 minutes** (day), **10 minutes** (night).
   - Commands:
     - `/simpleqol daylength get/set <minutes>`: View or set day length ☀️.
     - `/simpleqol nightlength get/set <minutes>`: View or set night length 🌑.
   - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
     - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
+
+### 🍂 Custom Leaf Decay Multiplier
+- Leaves decay twice as fast by default. This multiplier is adjustable in the config to be any value **>0.001**.
 
 ### ⚓ Respawn Anchor Overhaul
 - **Respawn anchors** are usable in **all dimensions** and do not explode 🚫💥.
@@ -29,6 +34,7 @@
 - No longer require **glowstone** to function 🚫✨.
 
 ### 🌍 Simple Biome Replacement
+- Hate a certain biome? Want more of a specific biome? Simple!
 - Adjust the simpleqol_config.json to replace biomes **(BEFORE GENERATION)** as you see fit, adding adjusting, or removing them from the config json.
 - Default replacement examples include:
     - "minecraft:stony_shore", "minecraft:beach" (**replaces stony_shore with beach**)
@@ -55,7 +61,7 @@ if you do not wish to replace any biomes.
     - Adjustable via config ⚙️.
 
 ### 🧳 Ender Chest
-- **Ender chests** drop as themselves regardless of the tool used 🔨.
+- **Ender chests** drop as themselves regardless of the tool used, no silk touch required 🔨.
 
 ### 🧶 Wool Crafting
 - **Wool** can be crafted into **4 strings** 🧵.
@@ -67,17 +73,19 @@ if you do not wish to replace any biomes.
 
 ### 🍓 Sweet Berry Bushes
 - **Berry bushes** no longer deal damage to players 🚫💥 (configurable).
+- Allows for greater decorative possibilities.
 
 ### 👻 Phantom Spawning
 - **Phantoms** spawn very rarely in the Overworld and specific End biomes (End Highlands, End Midlands) 🏞️.
-    - Customizable spawn weight and pack sizes via config (set to 0 to disable) ⚙️.
-    - Gamerule `doInsomnia` is set to **False** by default, adjustable in config 😴.
+    - Customizable spawn weight and pack sizes via config (set to 0 to disable and set doInsomnia to true for vanilla behavior) ⚙️.
+    - Gamerule `doInsomnia` (spawns Phantoms when player has not slept) is set to **False** by default, adjustable in config 😴.
 
 ### 🖥️ Mod Characteristics
 - **Fully server-side**: No client-side installation required 🌐.
 - Configurable settings for:
     - Enderman griefing 👁️‍🗨️.
-    - Berry bushes
+    - Leaf decay multiplier 🍂.
+    - Berry bushes 🍓.
     - Night length 🌙.
     - Fully customizable biome replacements 🌍.
     - Plant lighting levels 💡.

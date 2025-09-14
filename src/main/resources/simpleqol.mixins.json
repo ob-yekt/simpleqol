@@ -5,6 +5,7 @@
   "mixins": [
     "BlocksMixin",
     "EndermanEntityMixin",
+    "LeavesBlockMixin",
     "SleepMixin",
     "SpawnHelperMixin",
     "SweetBerryBushBlockMixin",

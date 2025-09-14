@@ -55,6 +55,8 @@ public class ConfigManager {
         public int pitcherCropStage2Brightness = 3;
         public int pitcherCropStage3Brightness = 6;
         public int pitcherCropStage4Brightness = 9;
+        // LEAF DECAY
+        public float leafDecayMultiplier = 2.0f; // Multiplier for leaf decay speed (1.0 = default, >1.0 = faster, <1.0 = slower, must be >0)
     }
 
     public static void populateDefaults() {
@@ -86,6 +88,7 @@ public class ConfigManager {
                     if (config.endPhantomMaxPackSize < config.endPhantomMinPackSize) {
                         config.endPhantomMaxPackSize = config.endPhantomMinPackSize;
                     }
+                    if (config.leafDecayMultiplier <= 0) config.leafDecayMultiplier = 1.0f; // Ensure positive, default to 1.0 if invalid
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -242,5 +245,10 @@ public class ConfigManager {
 
     public static int getPitcherCropStage4Brightness() {
         return config.pitcherCropStage4Brightness;
+    }
+
+    // LEAF DECAY
+    public static float getLeafDecayMultiplier() {
+        return Math.max(0.001f, config.leafDecayMultiplier); // Ensure positive, use small value to avoid division by zero
     }
 }
