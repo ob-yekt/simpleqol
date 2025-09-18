@@ -21,9 +21,8 @@ public class simpleqol implements ModInitializer {
 		ConfigManager.load();
 
 		// Register server start callback to initialize TimeController with server instance
-		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			TimeController.init(server); // Custom day and night
-		});
+        // Custom day and night
+        ServerLifecycleEvents.SERVER_STARTED.register(TimeController::init);
 
 		// Commands
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {

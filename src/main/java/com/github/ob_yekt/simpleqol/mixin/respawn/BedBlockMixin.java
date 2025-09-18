@@ -23,14 +23,24 @@ public class BedBlockMixin {
 
         // Check if the player has an active Respawn Anchor
         if (currentRespawn != null) {
-            ServerWorld currentWorld = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(currentRespawn.dimension());
-            if (currentWorld != null && currentWorld.getBlockState(currentRespawn.pos()).getBlock() instanceof RespawnAnchorBlock) {
-                // Check if the new spawn point is a bed (respawn parameter is not null and is a bed)
-                if (respawn != null) {
-                    ServerWorld newWorld = player.getEntityWorld().getServer().getWorld(respawn.dimension());
-                    if (newWorld != null && newWorld.getBlockState(respawn.pos()).getBlock() instanceof BedBlock) {
-                        // Prevent setting the spawn point to the bed, but allow sleeping (handled elsewhere)
-                        ci.cancel();
+            // Get dimension and position from the new respawn data structure
+            ServerWorld currentWorld = Objects.requireNonNull(player.getEntityWorld().getServer())
+                    .getWorld(currentRespawn.respawnData().method_74894()); // Gets dimension
+
+            if (currentWorld != null) {
+                BlockPos currentPos = currentRespawn.respawnData().method_74897(); // Gets BlockPos
+                if (currentWorld.getBlockState(currentPos).getBlock() instanceof RespawnAnchorBlock) {
+                    // Check if the new spawn point is a bed
+                    if (respawn != null) {
+                        ServerWorld newWorld = player.getEntityWorld().getServer()
+                                .getWorld(respawn.respawnData().method_74894());
+                        if (newWorld != null) {
+                            BlockPos newPos = respawn.respawnData().method_74897();
+                            if (newWorld.getBlockState(newPos).getBlock() instanceof BedBlock) {
+                                // Prevent setting the spawn point to the bed, but allow sleeping
+                                ci.cancel();
+                            }
+                        }
                     }
                 }
             }

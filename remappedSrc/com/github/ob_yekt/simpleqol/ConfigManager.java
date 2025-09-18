@@ -14,7 +14,7 @@ public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path CONFIG_PATH = FabricLoader.getInstance()
             .getGameDir()
-            .resolve("mods")
+            .resolve("config")
             .resolve("simpleqol_config.json");
 
     public static class Config {
@@ -26,6 +26,7 @@ public class ConfigManager {
         public long tickCounter = 0;
         // MISC
         public boolean endermanGriefing = false;
+        public boolean sweetberrybushDamage = false;
         // PHANTOMS
         public int overworldPhantomSpawnWeight = 2; // 0 = disabled (doesn't disable vanilla spawning), 5 = witch weight, 10 = enderman, 100 = zombie
         public int endPhantomSpawnWeight = 1; // Default = 1; 0 disables
@@ -54,6 +55,8 @@ public class ConfigManager {
         public int pitcherCropStage2Brightness = 3;
         public int pitcherCropStage3Brightness = 6;
         public int pitcherCropStage4Brightness = 9;
+        // LEAF DECAY
+        public float leafDecayMultiplier = 2.0f; // Multiplier for leaf decay speed (1.0 = default, >1.0 = faster, <1.0 = slower, must be >0)
     }
 
     public static void populateDefaults() {
@@ -85,6 +88,7 @@ public class ConfigManager {
                     if (config.endPhantomMaxPackSize < config.endPhantomMinPackSize) {
                         config.endPhantomMaxPackSize = config.endPhantomMinPackSize;
                     }
+                    if (config.leafDecayMultiplier <= 0) config.leafDecayMultiplier = 1.0f; // Ensure positive, default to 1.0 if invalid
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -144,6 +148,11 @@ public class ConfigManager {
     // ENDERMAN GRIEF
     public static boolean isEndermanGriefingAllowed() {
         return config.endermanGriefing;
+    }
+
+    // SWEET BERRY BUSH DAMAGE
+    public static boolean isSweetBerryBushDamageAllowed() {
+        return config.sweetberrybushDamage;
     }
 
     // PHANTOM CONFIGURATION
@@ -236,5 +245,10 @@ public class ConfigManager {
 
     public static int getPitcherCropStage4Brightness() {
         return config.pitcherCropStage4Brightness;
+    }
+
+    // LEAF DECAY
+    public static float getLeafDecayMultiplier() {
+        return Math.max(0.001f, config.leafDecayMultiplier); // Ensure positive, use small value to avoid division by zero
     }
 }

@@ -27,7 +27,7 @@ public class ServerPlayerEntityMixin {
             return;
         }
 
-        ServerWorld world = Objects.requireNonNull(player.getServer()).getWorld(respawn.dimension());
+        ServerWorld world = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(respawn.dimension());
         if (world == null) {
             // Fallback to vanilla behavior if the dimension is invalid
             return;
@@ -45,7 +45,7 @@ public class ServerPlayerEntityMixin {
 
         // If anchor is invalid, reset spawn for all players using this anchor
         if (state.getBlock() instanceof RespawnAnchorBlock) {
-            player.getServer().getPlayerManager().getPlayerList().forEach(p -> {
+            player.getEntityWorld().getServer().getPlayerManager().getPlayerList().forEach(p -> {
                 ServerPlayerEntity.Respawn playerRespawn = p.getRespawn();
                 if (playerRespawn != null && playerRespawn.pos().equals(respawn.pos())) {
                     p.setSpawnPoint(null, false);
