@@ -56,7 +56,7 @@ public class ConfigManager {
         public int pitcherCropStage3Brightness = 6;
         public int pitcherCropStage4Brightness = 9;
         // LEAF DECAY
-        public float leafDecayMultiplier = 2.0f; // Multiplier for leaf decay speed (1.0 = default, >1.0 = faster, <1.0 = slower, must be >0)
+        public float leafDecayMultiplier = 5.0f;
     }
 
     public static void populateDefaults() {

@@ -22,7 +22,7 @@
     - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
 
 ### 🍂 Custom Leaf Decay Multiplier
-- Leaves decay twice as fast by default. This multiplier is adjustable in the config to be any value **>0.001**.
+- Leaves decay faster. This multiplier is adjustable in the config (1=vanilla).
 - Jungle Saplings now drop at the same rate as all other saplings (vanilla behavior was 2.5% for jungle, 5% for all other saplings).
 
 ### ⚓ Respawn Anchor Overhaul
