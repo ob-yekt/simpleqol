@@ -21,9 +21,13 @@ public class WorldMixin {
         if (world.isClient() || !(world.getBlockState(pos).getBlock() instanceof RespawnAnchorBlock)) {
             return;
         }
+
+        // Clear spawn points for all players using this anchor
         Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().forEach(player -> {
             ServerPlayerEntity.Respawn respawn = player.getRespawn();
-            if (respawn != null && respawn.pos().equals(pos)) {
+            if (respawn != null &&
+                    respawn.respawnData().method_74897().equals(pos) &&
+                    respawn.respawnData().method_74894().equals(world.getRegistryKey())) {
                 player.setSpawnPoint(null, false);
             }
         });

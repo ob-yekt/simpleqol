@@ -31,8 +31,8 @@ public class ServerPlayerEntityMixin {
         }
 
         // Get dimension and position from the new respawn data structure
-        RegistryKey<World> dimension = respawn.respawnData().method_74894(); // Get dimension
-        BlockPos respawnPos = respawn.respawnData().method_74897(); // Get position
+        RegistryKey<World> dimension = respawn.respawnData().globalPos().dimension();
+        BlockPos respawnPos = respawn.respawnData().globalPos().pos();
 
         ServerWorld world = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(dimension);
         if (world == null) {
@@ -59,8 +59,8 @@ public class ServerPlayerEntityMixin {
             player.getEntityWorld().getServer().getPlayerManager().getPlayerList().forEach(p -> {
                 ServerPlayerEntity.Respawn playerRespawn = p.getRespawn();
                 if (playerRespawn != null &&
-                        playerRespawn.respawnData().method_74897().equals(respawnPos) &&
-                        playerRespawn.respawnData().method_74894().equals(dimension)) {
+                        playerRespawn.respawnData().globalPos().pos().equals(respawnPos) &&
+                        playerRespawn.respawnData().globalPos().dimension().equals(dimension)) {
                     p.setSpawnPoint(null, false);
                 }
             });

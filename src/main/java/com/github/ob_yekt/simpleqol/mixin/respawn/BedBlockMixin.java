@@ -5,7 +5,7 @@ import net.minecraft.block.RespawnAnchorBlock;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,17 +25,17 @@ public class BedBlockMixin {
         if (currentRespawn != null) {
             // Get dimension and position from the new respawn data structure
             ServerWorld currentWorld = Objects.requireNonNull(player.getEntityWorld().getServer())
-                    .getWorld(currentRespawn.respawnData().method_74894()); // Gets dimension
+                    .getWorld(currentRespawn.respawnData().getDimension());
 
             if (currentWorld != null) {
-                BlockPos currentPos = currentRespawn.respawnData().method_74897(); // Gets BlockPos
+                BlockPos currentPos = currentRespawn.respawnData().globalPos().pos();
                 if (currentWorld.getBlockState(currentPos).getBlock() instanceof RespawnAnchorBlock) {
                     // Check if the new spawn point is a bed
                     if (respawn != null) {
                         ServerWorld newWorld = player.getEntityWorld().getServer()
-                                .getWorld(respawn.respawnData().method_74894());
+                                .getWorld(respawn.respawnData().getDimension());
                         if (newWorld != null) {
-                            BlockPos newPos = respawn.respawnData().method_74897();
+                            BlockPos newPos = respawn.respawnData().globalPos().pos();
                             if (newWorld.getBlockState(newPos).getBlock() instanceof BedBlock) {
                                 // Prevent setting the spawn point to the bed, but allow sleeping
                                 ci.cancel();

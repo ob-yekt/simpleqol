@@ -8,11 +8,11 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.GlobalPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -41,8 +41,8 @@ public class RespawnAnchorBlockMixin {
 
         // Check if this specific anchor is the player's current spawn point
         boolean isPlayerCurrentAnchor = respawn != null &&
-                respawn.respawnData().method_74897().equals(pos) &&
-                respawn.respawnData().method_74894().equals(world.getRegistryKey());
+                respawn.respawnData().globalPos().pos().equals(pos) &&
+                respawn.respawnData().globalPos().dimension().equals(world.getRegistryKey());
 
         if (isPlayerCurrentAnchor) {
             // Player is right-clicking their own active respawn anchor - deactivate it
@@ -62,8 +62,8 @@ public class RespawnAnchorBlockMixin {
             boolean otherPlayersUsing = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
                     .anyMatch(p -> p != serverPlayer &&
                             p.getRespawn() != null &&
-                            p.getRespawn().respawnData().method_74897().equals(pos) &&
-                            p.getRespawn().respawnData().method_74894().equals(world.getRegistryKey()));
+                            p.getRespawn().respawnData().globalPos().pos().equals(pos) &&
+                            p.getRespawn().respawnData().globalPos().dimension().equals(world.getRegistryKey()));
 
             // If no other players are using it, set charges to 0
             if (!otherPlayersUsing) {
@@ -79,17 +79,17 @@ public class RespawnAnchorBlockMixin {
             // If player already has a respawn anchor, handle the old one
             if (respawn != null) {
                 ServerWorld oldWorld = Objects.requireNonNull(player.getEntityWorld().getServer())
-                        .getWorld(respawn.respawnData().method_74894());
+                        .getWorld(respawn.respawnData().globalPos().dimension());
 
                 if (oldWorld != null) {
-                    BlockPos oldPos = respawn.respawnData().method_74897();
+                    BlockPos oldPos = respawn.respawnData().globalPos().pos();
                     if (oldWorld.getBlockState(oldPos).getBlock() instanceof RespawnAnchorBlock) {
                         // Check if other players are using the old anchor
                         boolean othersUseOld = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
                                 .anyMatch(p -> p != serverPlayer &&
                                         p.getRespawn() != null &&
-                                        p.getRespawn().respawnData().method_74897().equals(oldPos) &&
-                                        p.getRespawn().respawnData().method_74894().equals(respawn.respawnData().method_74894()));
+                                        p.getRespawn().respawnData().globalPos().pos().equals(oldPos) &&
+                                        p.getRespawn().respawnData().globalPos().dimension().equals(respawn.respawnData().globalPos().dimension()));
 
                         // If no other players use the old anchor, set its charges to 0
                         if (!othersUseOld) {
@@ -102,7 +102,7 @@ public class RespawnAnchorBlockMixin {
             // Create new respawn data using the proper constructor
             try {
                 // Create the respawn data using the static factory method
-                WorldProperties.class_12064 respawnData = WorldProperties.class_12064.method_74895(
+                WorldProperties.SpawnPoint respawnData = WorldProperties.SpawnPoint.create(
                         world.getRegistryKey(),
                         pos,
                         0.0F, // yaw
@@ -140,9 +140,7 @@ public class RespawnAnchorBlockMixin {
                     respawnField.setAccessible(true);
                     respawnField.set(player, null);
                     return; // Success, exit the method
-                } catch (NoSuchFieldException e) {
-                    // Try next field name
-                    continue;
+                } catch (NoSuchFieldException ignored) {
                 }
             }
 
@@ -153,8 +151,6 @@ public class RespawnAnchorBlockMixin {
             // Silently fail
         }
     }
-
-
 
     @Inject(method = "explode", at = @At("HEAD"), cancellable = true)
     private void preventExplosion(BlockState state, World world, BlockPos pos, CallbackInfo ci) {

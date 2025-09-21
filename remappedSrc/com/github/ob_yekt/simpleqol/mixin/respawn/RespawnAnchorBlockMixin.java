@@ -8,7 +8,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.GlobalPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProperties;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,28 +41,17 @@ public class RespawnAnchorBlockMixin {
 
         // Check if this specific anchor is the player's current spawn point
         boolean isPlayerCurrentAnchor = respawn != null &&
-                respawn.pos().equals(pos) &&
-                respawn.dimension().equals(world.getRegistryKey());
+                respawn.respawnData().method_74897().equals(pos) &&
+                respawn.respawnData().method_74894().equals(world.getRegistryKey());
 
         if (isPlayerCurrentAnchor) {
             // Player is right-clicking their own active respawn anchor - deactivate it
 
-            // Use a more direct approach to clear the spawn point
-            ServerPlayerEntity.Respawn worldSpawn = new ServerPlayerEntity.Respawn(
-                    world.getRegistryKey(),
-                    world.getSpawnPos(),
-                    world.getSpawnAngle(),
-                    false // Add the missing boolean argument
-            );
-
-            // This should clear the player's custom spawn and revert to world spawn
+            // Clear the player's spawn point - try direct method first
             try {
-                // Try to clear by setting to world spawn instead of null
-                serverPlayer.setSpawnPoint(worldSpawn, false);
-                // Then immediately clear it completely
-                clearPlayerSpawn(serverPlayer);
+                serverPlayer.setSpawnPoint(null, false);
             } catch (Exception e) {
-                System.out.println("Error clearing spawn point: " + e.getMessage());
+                clearPlayerSpawn(serverPlayer);
             }
 
             // Play sound for deactivation
@@ -71,8 +62,8 @@ public class RespawnAnchorBlockMixin {
             boolean otherPlayersUsing = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
                     .anyMatch(p -> p != serverPlayer &&
                             p.getRespawn() != null &&
-                            p.getRespawn().pos().equals(pos) &&
-                            p.getRespawn().dimension().equals(world.getRegistryKey()));
+                            p.getRespawn().respawnData().method_74897().equals(pos) &&
+                            p.getRespawn().respawnData().method_74894().equals(world.getRegistryKey()));
 
             // If no other players are using it, set charges to 0
             if (!otherPlayersUsing) {
@@ -87,27 +78,45 @@ public class RespawnAnchorBlockMixin {
 
             // If player already has a respawn anchor, handle the old one
             if (respawn != null) {
-                ServerWorld oldWorld = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(respawn.dimension());
-                if (oldWorld != null && oldWorld.getBlockState(respawn.pos()).getBlock() instanceof RespawnAnchorBlock) {
-                    BlockPos oldPos = respawn.pos();
+                ServerWorld oldWorld = Objects.requireNonNull(player.getEntityWorld().getServer())
+                        .getWorld(respawn.respawnData().method_74894());
 
-                    // Check if other players are using the old anchor
-                    boolean othersUseOld = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
-                            .anyMatch(p -> p != serverPlayer &&
-                                    p.getRespawn() != null &&
-                                    p.getRespawn().pos().equals(oldPos) &&
-                                    p.getRespawn().dimension().equals(respawn.dimension()));
+                if (oldWorld != null) {
+                    BlockPos oldPos = respawn.respawnData().method_74897();
+                    if (oldWorld.getBlockState(oldPos).getBlock() instanceof RespawnAnchorBlock) {
+                        // Check if other players are using the old anchor
+                        boolean othersUseOld = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().stream()
+                                .anyMatch(p -> p != serverPlayer &&
+                                        p.getRespawn() != null &&
+                                        p.getRespawn().respawnData().method_74897().equals(oldPos) &&
+                                        p.getRespawn().respawnData().method_74894().equals(respawn.respawnData().method_74894()));
 
-                    // If no other players use the old anchor, set its charges to 0
-                    if (!othersUseOld) {
-                        oldWorld.setBlockState(oldPos, oldWorld.getBlockState(oldPos).with(RespawnAnchorBlock.CHARGES, 0), 3);
+                        // If no other players use the old anchor, set its charges to 0
+                        if (!othersUseOld) {
+                            oldWorld.setBlockState(oldPos, oldWorld.getBlockState(oldPos).with(RespawnAnchorBlock.CHARGES, 0), 3);
+                        }
                     }
                 }
             }
 
-            // Set the new spawn point
-            ServerPlayerEntity.Respawn newRespawn = new ServerPlayerEntity.Respawn(world.getRegistryKey(), pos, 0.0F, false);
-            serverPlayer.setSpawnPoint(newRespawn, false); // Changed to false to avoid op requirement
+            // Create new respawn data using the proper constructor
+            try {
+                // Create the respawn data using the static factory method
+                WorldProperties.class_12064 respawnData = WorldProperties.class_12064.method_74895(
+                        world.getRegistryKey(),
+                        pos,
+                        0.0F, // yaw
+                        0.0F  // pitch
+                );
+
+                // Create the respawn object
+                ServerPlayerEntity.Respawn newRespawn = new ServerPlayerEntity.Respawn(respawnData, false);
+
+                serverPlayer.setSpawnPoint(newRespawn, false);
+
+            } catch (Exception e) {
+                // Silently handle the error
+            }
 
             // Set the anchor to charged state
             world.setBlockState(pos, state.with(RespawnAnchorBlock.CHARGES, 4), 3);
@@ -118,18 +127,34 @@ public class RespawnAnchorBlockMixin {
         }
     }
 
-    // Helper method to clear player spawn using reflection if needed
+    // Helper method to clear player spawn using reflection
     @Unique
     private void clearPlayerSpawn(ServerPlayerEntity player) {
         try {
-            // Try to access the private field directly
-            java.lang.reflect.Field respawnField = ServerPlayerEntity.class.getDeclaredField("respawn");
-            respawnField.setAccessible(true);
-            respawnField.set(player, null);
+            // Try multiple possible field names
+            String[] possibleFieldNames = {"respawn", "field_13996", "spawnPoint", "respawnPoint"};
+
+            for (String fieldName : possibleFieldNames) {
+                try {
+                    java.lang.reflect.Field respawnField = ServerPlayerEntity.class.getDeclaredField(fieldName);
+                    respawnField.setAccessible(true);
+                    respawnField.set(player, null);
+                    return; // Success, exit the method
+                } catch (NoSuchFieldException e) {
+                    // Try next field name
+                    continue;
+                }
+            }
+
+            // If all field names failed, try to use setSpawnPoint with null
+            player.setSpawnPoint(null, false);
+
         } catch (Exception e) {
-            System.out.println("Could not clear spawn via reflection: " + e.getMessage());
+            // Silently fail
         }
     }
+
+
 
     @Inject(method = "explode", at = @At("HEAD"), cancellable = true)
     private void preventExplosion(BlockState state, World world, BlockPos pos, CallbackInfo ci) {

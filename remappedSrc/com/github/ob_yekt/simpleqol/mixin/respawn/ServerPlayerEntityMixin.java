@@ -5,8 +5,11 @@ import net.minecraft.block.RespawnAnchorBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,18 +30,26 @@ public class ServerPlayerEntityMixin {
             return;
         }
 
-        ServerWorld world = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(respawn.dimension());
+        // Get dimension and position from the new respawn data structure
+        RegistryKey<World> dimension = respawn.respawnData().method_74894(); // Get dimension
+        BlockPos respawnPos = respawn.respawnData().method_74897(); // Get position
+
+        ServerWorld world = Objects.requireNonNull(player.getEntityWorld().getServer()).getWorld(dimension);
         if (world == null) {
             // Fallback to vanilla behavior if the dimension is invalid
             return;
         }
 
-        BlockState state = world.getBlockState(respawn.pos());
+        BlockState state = world.getBlockState(respawnPos);
         if (state.getBlock() instanceof RespawnAnchorBlock && state.get(RespawnAnchorBlock.CHARGES) > 0) {
-            Optional<Vec3d> respawnPos = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, world, respawn.pos());
-            if (respawnPos.isPresent()) {
+            Optional<Vec3d> respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, world, respawnPos);
+            if (respawnPosition.isPresent()) {
+                // Get yaw and pitch from respawn data
+                float yaw = respawn.respawnData().yaw();
+                float pitch = respawn.respawnData().pitch();
+
                 // Return a TeleportTarget to respawn at the anchor's position in its dimension
-                cir.setReturnValue(new TeleportTarget(world, respawnPos.get(), Vec3d.ZERO, respawn.angle(), 0.0F, postDimensionTransition));
+                cir.setReturnValue(new TeleportTarget(world, respawnPosition.get(), Vec3d.ZERO, yaw, pitch, postDimensionTransition));
                 return;
             }
         }
@@ -47,7 +58,9 @@ public class ServerPlayerEntityMixin {
         if (state.getBlock() instanceof RespawnAnchorBlock) {
             player.getEntityWorld().getServer().getPlayerManager().getPlayerList().forEach(p -> {
                 ServerPlayerEntity.Respawn playerRespawn = p.getRespawn();
-                if (playerRespawn != null && playerRespawn.pos().equals(respawn.pos())) {
+                if (playerRespawn != null &&
+                        playerRespawn.respawnData().method_74897().equals(respawnPos) &&
+                        playerRespawn.respawnData().method_74894().equals(dimension)) {
                     p.setSpawnPoint(null, false);
                 }
             });

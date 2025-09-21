@@ -2,7 +2,7 @@
   "type": "minecraft:stonecutting",
   "ingredient": "minecraft:stripped_warped_stem",
   "result": {
-    "count": 2,
+    "count": 4,
     "id": "minecraft:warped_stairs"
   }
 }
