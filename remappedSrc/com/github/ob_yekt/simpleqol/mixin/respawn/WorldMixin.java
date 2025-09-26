@@ -26,8 +26,8 @@ public class WorldMixin {
         Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList().forEach(player -> {
             ServerPlayerEntity.Respawn respawn = player.getRespawn();
             if (respawn != null &&
-                    respawn.respawnData().method_74897().equals(pos) &&
-                    respawn.respawnData().method_74894().equals(world.getRegistryKey())) {
+                    respawn.respawnData().globalPos().pos().equals(pos) &&
+                    respawn.respawnData().globalPos().dimension().equals(world.getRegistryKey())) {
                 player.setSpawnPoint(null, false);
             }
         });

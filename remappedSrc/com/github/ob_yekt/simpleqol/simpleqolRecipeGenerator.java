@@ -82,7 +82,7 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                         // Recipes
                         addStonecutterRecipe(input, recipe[4], 4);  // Planks
                         addStonecutterRecipe(input, recipe[5], 8);  // Slabs
-                        addStonecutterRecipe(input, recipe[6], 2);  // Stairs
+                        addStonecutterRecipe(input, recipe[6], 4);  // Stairs
                         addStonecutterRecipe(input, recipe[7], 2);  // Fence
                         addStonecutterRecipe(input, recipe[8], 1);  // Fence Gate
                         addStonecutterRecipe(input, recipe[9], 2);  // Door
