@@ -5,9 +5,10 @@ import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static net.minecraft.world.rule.GameRules.ADVANCE_TIME;
 
 public class TimeController implements ServerTickEvents.StartTick {
     private static final Logger LOGGER = LoggerFactory.getLogger("simpleqol");
@@ -89,7 +90,7 @@ public class TimeController implements ServerTickEvents.StartTick {
         // Disable vanilla daylight cycle once
         if (tickCounter == 1) {
             for (ServerWorld world : server.getWorlds()) {
-                world.getGameRules().get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server);
+                world.getGameRules().setValue(ADVANCE_TIME, false, world.getServer());
             }
         }
 

@@ -3,15 +3,17 @@ package com.github.ob_yekt.simpleqol;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.GameRules;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static net.minecraft.world.biome.BiomeKeys.END_HIGHLANDS;
 import static net.minecraft.world.biome.BiomeKeys.END_MIDLANDS;
+import static net.minecraft.world.rule.GameRules.SPAWN_PHANTOMS;
 
 public class PhantomManager {
     private static final Logger LOGGER = LoggerFactory.getLogger("simpleqol-phantoms");
@@ -39,10 +41,12 @@ public class PhantomManager {
         // Set doInsomnia gamerule based on config
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             boolean doInsomnia = ConfigManager.isDoInsomniaEnabled();
+
             for (ServerWorld world : server.getWorlds()) {
-                world.getGameRules().get(GameRules.DO_INSOMNIA).set(doInsomnia, server);
+                world.getGameRules().setValue(SPAWN_PHANTOMS, doInsomnia, server);
             }
-            LOGGER.info("Gamerule doInsomnia set to {}", doInsomnia);
+
+            LOGGER.info("Gamerule allowInsomnia set to {}", doInsomnia);
         });
 
         LOGGER.info("Phantom spawn modifications applied successfully");

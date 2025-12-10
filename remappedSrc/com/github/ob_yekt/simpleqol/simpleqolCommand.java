@@ -2,6 +2,8 @@ package com.github.ob_yekt.simpleqol;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import net.minecraft.command.permission.Permission;
+import net.minecraft.command.permission.PermissionLevel;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -9,7 +11,7 @@ import net.minecraft.text.Text;
 public class simpleqolCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(CommandManager.literal("simpleqol")
-                .requires(source -> source.hasPermissionLevel(2)) // OP-only
+                .requires(source -> source.getPermissions().hasPermission(new Permission.Level(PermissionLevel.MODERATORS)))
                 .then(CommandManager.literal("daylength")
                         .then(CommandManager.literal("get")
                                 .executes(ctx -> {
@@ -18,7 +20,7 @@ public class simpleqolCommand {
                                     return 1;
                                 }))
                         .then(CommandManager.literal("set")
-                                .then(CommandManager.argument("minutes", IntegerArgumentType.integer(1, 240))
+                                .then(CommandManager.argument("minutes", IntegerArgumentType.integer(1, 1440))
                                         .executes(ctx -> {
                                             int minutes = IntegerArgumentType.getInteger(ctx, "minutes");
                                             TimeController.setDayTicks(minutes * 20L * 60L, ctx.getSource().getServer());
@@ -33,7 +35,7 @@ public class simpleqolCommand {
                                     return 1;
                                 }))
                         .then(CommandManager.literal("set")
-                                .then(CommandManager.argument("minutes", IntegerArgumentType.integer(1, 240))
+                                .then(CommandManager.argument("minutes", IntegerArgumentType.integer(1, 1440))
                                         .executes(ctx -> {
                                             int minutes = IntegerArgumentType.getInteger(ctx, "minutes");
                                             TimeController.setNightTicks(minutes * 20L * 60L, ctx.getSource().getServer());

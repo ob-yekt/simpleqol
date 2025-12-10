@@ -153,7 +153,7 @@ public class RespawnAnchorBlockMixin {
     }
 
     @Inject(method = "explode", at = @At("HEAD"), cancellable = true)
-    private void preventExplosion(BlockState state, World world, BlockPos pos, CallbackInfo ci) {
+    private void preventExplosion(BlockState state, ServerWorld world, BlockPos pos, CallbackInfo ci) {
         ci.cancel();
     }
 
