@@ -29,6 +29,7 @@ public class ConfigManager {
         // MISC
         public boolean endermanGriefing = false;
         public boolean sweetberrybushDamage = false;
+        public boolean librarianRebalance = true;
 
         // LEAF LITTER
         public float leafLitterMultiplier = 0.25f;
@@ -158,6 +159,10 @@ public class ConfigManager {
 
     public static boolean isSweetBerryBushDamageAllowed() {
         return config.sweetberrybushDamage;
+    }
+
+    public static boolean isLibrarianRebalanceEnabled() {
+        return config.librarianRebalance;
     }
 
     public static boolean isInstantLeafDecayEnabled() {

@@ -12,6 +12,9 @@
     "SpawnPlacementsMixin",
     "SweetBerryBushBlockMixin",
     "anvil.AnvilMenuMixin",
+    "librarian.AbstractVillagerMixin",
+    "librarian.VillagerMixin",
+    "librarian.VillagerTradeAccessorMixin",
     "worldgen.BiomeReplacementMixin",
     "worldgen.PlaceOnGroundDecoratorMixin",
     "worldgen.SimpleBlockFeatureMixin"

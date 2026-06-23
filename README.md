@@ -1,6 +1,6 @@
 # 🌟 simpleqol Mod Changelog and Feature List
 
-🛠️ A lightweight, server-side Minecraft mod focused on quality-of-life improvements and tweaks.
+🛠️ A lightweight, customizable, server-side Minecraft mod focused on quality-of-life improvements and balance tweaks.
 
 🌐 **Fully server-side**: No client-side installation required.
 
@@ -17,11 +17,6 @@
 - **Blue Ice** can be crafted into **9 Packed Ice** ❄️.
 - **Block of Quartz** can be crafted into **9 Nether Quartz**
 
-### 🕊️ Custom Elytra (Enable/disable in config.json, flight speed adjustable in config.json)
-- **Elytra** has been overhauled: it now allows players to hover as in Creative mode.
-- **Elytra** no longer allows users to glide.
-- **Fireworks** no longer launch players that are using an **Elytra**.
-
 ### 🌞🌙 Custom Day and Night Lengths
 - Configure **day** and **night lengths** in real-life minutes ⏰.
   - Default: **30 minutes** (day), **10 minutes** (night).
@@ -31,14 +26,52 @@
   - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
     - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
 
-### 🍃 Trees & Leaves
+### Anvil
+- Repairing items does not add prior work penalty
+- Repairing items always costs 1 level
+- Logic for operations that combine enchantments remain unchanged
+
+### 🧳 Ender Chest
+- **Ender chests** drop as themselves regardless of the tool used, no silk touch required 🔨.
+
+### 🕊️ Custom Elytra (Enable/disable in config.json, flight speed adjustable in config.json)
+- **Elytra** has been overhauled: it now allows players to hover as in Creative mode.
+- **Elytra** no longer allows users to glide.
+- **Fireworks** no longer launch players that are using an **Elytra**.
+
+### Librarian Rebalance (Configurable in config.json)
+- Librarians **can no longer** offer Enchanted Books at levels 1, 2, 3, and 4.
+- Librarians **ALWAYS** offer an Enchanted Book at level 5.
+- The Level 5 Enchanted Book trade has a stock level of 1.
+- After restocking, the Enchanted Book is randomized.
+
+### 🍃 Trees & Leaves (Configurable in config.json)
 - Leaves decay instantly. Set to true/false in config.
 - Jungle Saplings now drop at the same rate as all other saplings (vanilla behavior was 2.5% for jungle, 5% for all other saplings).
 
-### 🍂 Less Leaf Litter
+### 🍂 Less Leaf Litter (Configurable in config.json)
 - Amount of **Leaf Litter** has been reduced by 75% (Configurable in config.json, 1 = vanilla)
- 
-### 🌍 Simple Biome Replacement
+
+### 🍓 Sweet Berry Bushes (Configurable in config.json)
+- **Berry bushes** no longer deal damage to **players**.
+
+### 🌱 Composting (Add your own items + compost chance in the config.json)
+- **Poisonous potatoes** are now compostable 🥔.
+- **Rotten Flesh** is now compostable.
+- **Fish** are now compostable.
+- **Meats** are now compostable.
+- **Eggs** are now compostable.
+
+### 👁️‍🗨️ Enderman Behavior (Configurable in config.json)
+- **Enderman griefing** is disabled by default 🚫. (Configurable in config.json)
+
+
+### 👻 Phantom Spawning (Configurable in config.json)
+- **Phantoms** spawn naturally in the Overworld and the End 🏞️.
+    - Customizable spawn weight and pack sizes via config ⚙️.
+    - Gamerule `doInsomnia` (spawns Phantoms when player has not slept) is set to **False** by default 😴.
+
+### 🌍 Simple Biome Replacement (Configurable in config.json)
 - Hate a certain biome? Want more of a specific biome? Simple!
 - Adjust the simpleqol_config.json to replace biomes **(BEFORE GENERATION)** as you see fit, adding adjusting, or removing them from the config json.
 - Default replacement examples include:
@@ -68,33 +101,7 @@ or
 ```
 if you want to change all **Desert** biomes to **Tundra** biomes.
 
-### 🍓 Sweet Berry Bushes
-- **Berry bushes** no longer deal damage to **players**.
-
-### 🌱 Composting (Add your own items + compost chance in the config.json)
-- **Poisonous potatoes** are now compostable 🥔.
-- **Rotten Flesh** is now compostable.
-- **Fish** are now compostable.
-- **Meats** are now compostable.
-- **Eggs** are now compostable.
-
-### Anvil
-- Repairing items does not add prior work penalty
-- Repairing items always costs 1 level
-- Logic for operations that combine enchantments remain unchanged
-
-### 👁️‍🗨️ Enderman Behavior
-- **Enderman griefing** is disabled by default 🚫. (Configurable in config.json)
-
-### 🧳 Ender Chest
-- **Ender chests** drop as themselves regardless of the tool used, no silk touch required 🔨.
-
-### 👻 Phantom Spawning
-- **Phantoms** spawn naturally in the Overworld and the End 🏞️.
-    - Customizable spawn weight and pack sizes via config ⚙️.
-    - Gamerule `doInsomnia` (spawns Phantoms when player has not slept) is set to **False** by default 😴.
-
 ### 🖥️ Mod Characteristics
 - **Fully server-side**: No client-side installation required 🌐.
-
+- Reload config.json changes with `/simpleqol reload`, no need to restart the server.
 ## Make sure to also check out my other mod 'simpleskills' on [Modrinth](https://modrinth.com/mod/simpleskills) or [GitHub](https://github.com/ob-yekt/simpleskills)!
