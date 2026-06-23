@@ -1,14 +1,14 @@
 package com.github.ob_yekt.simpleqol;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
+import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.clock.WorldClock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static net.minecraft.world.rule.GameRules.ADVANCE_TIME;
+import java.util.Optional;
 
 public class TimeController implements ServerTickEvents.StartTick {
     private static final Logger LOGGER = LoggerFactory.getLogger("simpleqol");
@@ -29,6 +29,29 @@ public class TimeController implements ServerTickEvents.StartTick {
     private static long dayTicks;
     private static long nightTicks;
 
+    // The clock we use as the source of truth for sync-detection / initial read.
+    // Normally resolves to the overworld's default clock (minecraft:overworld).
+    private static Holder<WorldClock> referenceClock;
+
+    /**
+     * Finds (and caches) a clock to use for reading back the "current" time, e.g. to detect
+     * an external /time set or to seed tickCounter on first load. Picks the first level's
+     * default clock it finds.
+     */
+    private static Optional<Holder<WorldClock>> resolveReferenceClock(MinecraftServer server) {
+        if (referenceClock != null) {
+            return Optional.of(referenceClock);
+        }
+        for (ServerLevel level : server.getAllLevels()) {
+            Optional<Holder<WorldClock>> clock = level.dimensionType().defaultClock();
+            if (clock.isPresent()) {
+                referenceClock = clock.get();
+                return clock;
+            }
+        }
+        return Optional.empty();
+    }
+
     private static void updateVisualTime(MinecraftServer server) {
         long totalCycle = dayTicks + nightTicks;
         long tickOfCycle = tickCounter % totalCycle;
@@ -42,38 +65,38 @@ public class TimeController implements ServerTickEvents.StartTick {
             visualTime = 12542L + (nightElapsed * (23999L - 12542L)) / nightTicks;
         }
 
-        for (ServerWorld world : server.getWorlds()) {
-            world.setTimeOfDay(visualTime);
-            for (ServerPlayerEntity player : world.getPlayers()) {
-                player.networkHandler.sendPacket(new WorldTimeUpdateS2CPacket(
-                        world.getTime(), visualTime, false
-                ));
-            }
+        // setTotalTicks() on ServerClockManager broadcasts ClientboundSetTimePacket to all
+        // players internally, so there's no manual packet-sending needed anymore.
+        for (ServerLevel level : server.getAllLevels()) {
+            level.dimensionType().defaultClock().ifPresent(clock -> server.clockManager().setTotalTicks(clock, visualTime));
         }
+
         LOGGER.debug("Updated visualTime: {}, tickCounter: {}", visualTime, tickCounter);
     }
 
     @Override
     public void onStartTick(MinecraftServer server) {
-        if (!initialized && server.getWorlds().iterator().hasNext()) {
-            // Initialize tickCounter to match worldTime directly
-            ServerWorld world = server.getWorlds().iterator().next();
-            long worldTime = world.getTimeOfDay();
-            tickCounter = Math.max(0, worldTime);
-            LOGGER.info("First tick sync: tickCounter: {} for worldTime: {}", tickCounter, worldTime);
+        if (!initialized && server.getAllLevels().iterator().hasNext()) {
+            // Initialize tickCounter to match the reference clock's current time directly
+            resolveReferenceClock(server).ifPresent(clock -> {
+                long worldTime = server.clockManager().getTotalTicks(clock);
+                tickCounter = Math.max(0, worldTime);
+                LOGGER.info("First tick sync: tickCounter: {} for worldTime: {}", tickCounter, worldTime);
+            });
             initialized = true;
         }
 
         if (stabilizationTicks > 0) {
             // Skip time updates for first 20 ticks to stabilize world time
             stabilizationTicks--;
-            LOGGER.debug("Stabilization tick: {}, worldTime: {}", stabilizationTicks, server.getWorlds().iterator().next().getTimeOfDay());
+            LOGGER.debug("Stabilization tick: {}", stabilizationTicks);
             return;
         }
 
         // Check if world time was changed (e.g., by /time set command)
-        for (ServerWorld world : server.getWorlds()) {
-            long worldTime = world.getTimeOfDay();
+        Optional<Holder<WorldClock>> reference = resolveReferenceClock(server);
+        if (reference.isPresent()) {
+            long worldTime = server.clockManager().getTotalTicks(reference.get());
             if (Math.abs(worldTime - visualTime) > 5) { // Allow small discrepancies
                 // Sync tickCounter to match the new world time
                 syncTickCounterToWorldTime(worldTime);
@@ -82,15 +105,17 @@ public class TimeController implements ServerTickEvents.StartTick {
                 ConfigManager.setTickCounter(tickCounter);
                 ConfigManager.save();
             }
-            break; // Check only one world
         }
 
         tickCounter++;
 
-        // Disable vanilla daylight cycle once
+        // Pause vanilla's automatic clock advancement once, per-clock, so our own
+        // setTotalTicks() calls are the sole driver of time. This is more surgical than the
+        // old "disable doDaylightCycle" trick, since advance_time is now a server-global
+        // gamerule that would freeze every clock (including the End's), not just this one.
         if (tickCounter == 1) {
-            for (ServerWorld world : server.getWorlds()) {
-                world.getGameRules().setValue(ADVANCE_TIME, false, world.getServer());
+            for (ServerLevel level : server.getAllLevels()) {
+                level.dimensionType().defaultClock().ifPresent(clock -> server.clockManager().setPaused(clock, true));
             }
         }
 
@@ -129,12 +154,11 @@ public class TimeController implements ServerTickEvents.StartTick {
         dayTicks = Math.max(1, newDayTicks);
 
         // Recalculate tickCounter to maintain current world time
-        if (server.getWorlds().iterator().hasNext()) {
-            ServerWorld world = server.getWorlds().iterator().next();
-            long worldTime = world.getTimeOfDay();
+        resolveReferenceClock(server).ifPresent(clock -> {
+            long worldTime = server.clockManager().getTotalTicks(clock);
             syncTickCounterToWorldTime(worldTime);
             LOGGER.info("Set dayTicks: {}, recalculated tickCounter: {} for worldTime: {}", dayTicks, tickCounter, worldTime);
-        }
+        });
 
         // Save both settings
         ConfigManager.setDayTicks(dayTicks);
@@ -147,12 +171,11 @@ public class TimeController implements ServerTickEvents.StartTick {
         nightTicks = Math.max(1, newNightTicks);
 
         // Recalculate tickCounter to maintain current world time
-        if (server.getWorlds().iterator().hasNext()) {
-            ServerWorld world = server.getWorlds().iterator().next();
-            long worldTime = world.getTimeOfDay();
+        resolveReferenceClock(server).ifPresent(clock -> {
+            long worldTime = server.clockManager().getTotalTicks(clock);
             syncTickCounterToWorldTime(worldTime);
             LOGGER.info("Set nightTicks: {}, recalculated tickCounter: {} for worldTime: {}", nightTicks, tickCounter, worldTime);
-        }
+        });
 
         // Save both settings
         ConfigManager.setNightTicks(nightTicks);

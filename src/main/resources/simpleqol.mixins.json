@@ -1,20 +1,19 @@
 {
   "required": true,
   "package": "com.github.ob_yekt.simpleqol.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "BlocksMixin",
-    "EndermanEntityMixin",
+    "EnderManMixin",
     "LeavesBlockMixin",
+    "PlayerMixin",
     "SleepMixin",
-    "SpawnHelperMixin",
+    "SpawnPlacementsAccessor",
+    "SpawnPlacementsMixin",
     "SweetBerryBushBlockMixin",
-    "WorldMixin",
-    "respawn.BedBlockMixin",
-    "respawn.RespawnAnchorBlockMixin",
-    "respawn.ServerPlayerEntityMixin",
-    "respawn.WorldMixin",
-    "worldgen.BiomeReplacementMixin"
+    "anvil.AnvilMenuMixin",
+    "worldgen.BiomeReplacementMixin",
+    "worldgen.PlaceOnGroundDecoratorMixin",
+    "worldgen.SimpleBlockFeatureMixin"
   ],
   "injectors": {
     "defaultRequire": 1

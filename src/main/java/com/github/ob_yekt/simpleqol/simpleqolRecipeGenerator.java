@@ -1,60 +1,33 @@
 package com.github.ob_yekt.simpleqol;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.data.recipe.ShapedRecipeJsonBuilder;
-import net.minecraft.data.recipe.ShapelessRecipeJsonBuilder;
-import net.minecraft.data.recipe.StonecuttingRecipeJsonBuilder;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SingleItemRecipeBuilder;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class simpleqolRecipeGenerator extends FabricRecipeProvider {
-    public simpleqolRecipeGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public simpleqolRecipeGenerator(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    public RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup registries, RecipeExporter exporter) {
-        return new RecipeGenerator(registries, exporter) {
+    protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup, RecipeOutput exporter) {
+        return new RecipeProvider(registryLookup, exporter) {
             @Override
-            public void generate() {
-                // Deepslate recipes
-                // COBBLED
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.COBBLED_DEEPSLATE_SLAB, 2);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.COBBLED_DEEPSLATE_STAIRS, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.COBBLED_DEEPSLATE_WALL, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.COBBLED_DEEPSLATE, 1);
-                // BRICKS
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_BRICK_SLAB, 2);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_BRICK_STAIRS, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_BRICK_WALL, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_BRICKS, 1);
-                // TILES
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_TILE_SLAB, 2);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_TILE_STAIRS, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_TILE_WALL, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.DEEPSLATE_TILES, 1);
-                // POLISHED
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.POLISHED_DEEPSLATE, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.POLISHED_DEEPSLATE_SLAB, 2);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.POLISHED_DEEPSLATE_STAIRS, 1);
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.POLISHED_DEEPSLATE_WALL, 1);
-                // CHISELED
-                addStonecutterRecipe(Blocks.DEEPSLATE, Blocks.CHISELED_DEEPSLATE, 1);
-
+            public void buildRecipes() {
                 // Wood recipes for all wood types - includes logs, wood, stripped variants, signs, and shelves
-                ItemConvertible[][] woodRecipes = {
+                ItemLike[][] woodRecipes = {
                         // {log, wood, stripped_log, stripped_wood, planks, slab, stairs, fence, fence_gate, door, trapdoor, sign, shelf}
                         {Blocks.ACACIA_LOG, Blocks.ACACIA_WOOD, Blocks.STRIPPED_ACACIA_LOG, Blocks.STRIPPED_ACACIA_WOOD, Blocks.ACACIA_PLANKS, Blocks.ACACIA_SLAB, Blocks.ACACIA_STAIRS, Blocks.ACACIA_FENCE, Blocks.ACACIA_FENCE_GATE, Blocks.ACACIA_DOOR, Blocks.ACACIA_TRAPDOOR, Items.ACACIA_SIGN, Items.ACACIA_SHELF},
                         {Blocks.BIRCH_LOG, Blocks.BIRCH_WOOD, Blocks.STRIPPED_BIRCH_LOG, Blocks.STRIPPED_BIRCH_WOOD, Blocks.BIRCH_PLANKS, Blocks.BIRCH_SLAB, Blocks.BIRCH_STAIRS, Blocks.BIRCH_FENCE, Blocks.BIRCH_FENCE_GATE, Blocks.BIRCH_DOOR, Blocks.BIRCH_TRAPDOOR, Items.BIRCH_SIGN, Items.BIRCH_SHELF},
@@ -69,10 +42,10 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                         {Blocks.WARPED_STEM, Blocks.WARPED_HYPHAE, Blocks.STRIPPED_WARPED_STEM, Blocks.STRIPPED_WARPED_HYPHAE, Blocks.WARPED_PLANKS, Blocks.WARPED_SLAB, Blocks.WARPED_STAIRS, Blocks.WARPED_FENCE, Blocks.WARPED_FENCE_GATE, Blocks.WARPED_DOOR, Blocks.WARPED_TRAPDOOR, Items.WARPED_SIGN, Items.WARPED_SHELF}
                 };
 
-                for (ItemConvertible[] recipe : woodRecipes) {
+                for (ItemLike[] recipe : woodRecipes) {
                     // For each wood type, add recipes from all 4 input variants (log, wood, stripped_log, stripped_wood)
                     for (int inputIndex = 0; inputIndex < 4; inputIndex++) {
-                        ItemConvertible input = recipe[inputIndex];
+                        ItemLike input = recipe[inputIndex];
                         // Add recipes for non-stripped to stripped variants
                         if (inputIndex == 0) { // Log -> Stripped Log
                             addStonecutterRecipe(input, recipe[2], 1); // e.g., OAK_LOG -> STRIPPED_OAK_LOG
@@ -92,7 +65,7 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                     }
 
                     // Additional plank recipes (from planks)
-                    ItemConvertible planks = recipe[4];
+                    ItemLike planks = recipe[4];
                     addStonecutterRecipe(planks, Items.STICK, 2);        // 1 plank = 2 sticks
                     addStonecutterRecipe(planks, recipe[5], 2);          // 1 plank = 2 slabs
                     addStonecutterRecipe(planks, recipe[6], 1);          // 1 plank = 1 stair
@@ -102,46 +75,38 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                 addImprovedCraftingRecipes();
             }
 
-            private void addStonecutterRecipe(ItemConvertible input, ItemConvertible output, int count) {
-                StonecuttingRecipeJsonBuilder.createStonecutting(Ingredient.ofItems(input), RecipeCategory.BUILDING_BLOCKS, output, count)
-                        .criterion(hasItem(input), conditionsFromItem(input))
-                        .offerTo(this.exporter, "simpleqol:" + getItemPath(output) + "_from_" + getItemPath(input) + "_stonecutting");
+            private void addStonecutterRecipe(ItemLike input, ItemLike output, int count) {
+                SingleItemRecipeBuilder.stonecutting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, count)
+                        .unlockedBy(getHasName(input), has(input))
+                        .save(this.output, "simpleqol:" + getItemName(output) + "_from_" + getItemName(input) + "_stonecutting");
             }
 
             private void addImprovedCraftingRecipes() {
 
                 // Additional crafting table recipes
                 // 1 wool (any color) -> 4 string
-                RegistryEntryList<Item> woolTag = this.registries.getOrThrow(RegistryKeys.ITEM)
-                        .getOrThrow(net.minecraft.registry.tag.ItemTags.WOOL);
-                ShapelessRecipeJsonBuilder.create(this.registries.getOrThrow(net.minecraft.registry.RegistryKeys.ITEM), RecipeCategory.MISC, Items.STRING, 4)
-                        .input(Ingredient.ofTag(woolTag))
-                        .criterion("has_wool", conditionsFromTag(net.minecraft.registry.tag.ItemTags.WOOL))
-                        .offerTo(this.exporter, "simpleqol:string_from_wool");
-
-                // For nether wart
-                ShapelessRecipeJsonBuilder.create(this.registries.getOrThrow(net.minecraft.registry.RegistryKeys.ITEM), RecipeCategory.MISC, Items.NETHER_WART, 9)
-                        .input(Blocks.NETHER_WART_BLOCK)
-                        .criterion(hasItem(Blocks.NETHER_WART_BLOCK), conditionsFromItem(Blocks.NETHER_WART_BLOCK))
-                        .offerTo(this.exporter, "simpleqol:nether_wart_from_nether_wart_block");
+                shapeless(RecipeCategory.MISC, Items.STRING, 4)
+                        .requires(ItemTags.WOOL)
+                        .unlockedBy("has_wool", has(ItemTags.WOOL))
+                        .save(this.output, "simpleqol:string_from_wool");
 
                 // For packed ice
-                ShapelessRecipeJsonBuilder.create(this.registries.getOrThrow(net.minecraft.registry.RegistryKeys.ITEM), RecipeCategory.MISC, Blocks.ICE, 9)
-                        .input(Blocks.PACKED_ICE)
-                        .criterion(hasItem(Blocks.PACKED_ICE), conditionsFromItem(Blocks.PACKED_ICE))
-                        .offerTo(this.exporter, "simpleqol:ice_from_packed_ice");
+                shapeless(RecipeCategory.MISC, Blocks.ICE, 9)
+                        .requires(Blocks.PACKED_ICE)
+                        .unlockedBy(getHasName(Blocks.PACKED_ICE), has(Blocks.PACKED_ICE))
+                        .save(this.output, "simpleqol:ice_from_packed_ice");
 
                 // For blue ice
-                ShapelessRecipeJsonBuilder.create(this.registries.getOrThrow(net.minecraft.registry.RegistryKeys.ITEM), RecipeCategory.MISC, Blocks.PACKED_ICE, 9)
-                        .input(Blocks.BLUE_ICE)
-                        .criterion(hasItem(Blocks.BLUE_ICE), conditionsFromItem(Blocks.BLUE_ICE))
-                        .offerTo(this.exporter, "simpleqol:packed_ice_from_blue_ice");
+                shapeless(RecipeCategory.MISC, Blocks.PACKED_ICE, 9)
+                        .requires(Blocks.BLUE_ICE)
+                        .unlockedBy(getHasName(Blocks.BLUE_ICE), has(Blocks.BLUE_ICE))
+                        .save(this.output, "simpleqol:packed_ice_from_blue_ice");
 
                 // For quartz
-                ShapelessRecipeJsonBuilder.create(this.registries.getOrThrow(net.minecraft.registry.RegistryKeys.ITEM), RecipeCategory.MISC, Items.QUARTZ, 4)
-                        .input(Blocks.QUARTZ_BLOCK)
-                        .criterion(hasItem(Blocks.QUARTZ_BLOCK), conditionsFromItem(Blocks.QUARTZ_BLOCK))
-                        .offerTo(this.exporter, "simpleqol:quartz_from_quartz_block");
+                shapeless(RecipeCategory.MISC, Items.QUARTZ, 4)
+                        .requires(Blocks.QUARTZ_BLOCK)
+                        .unlockedBy(getHasName(Blocks.QUARTZ_BLOCK), has(Blocks.QUARTZ_BLOCK))
+                        .save(this.output, "simpleqol:quartz_from_quartz_block");
             }
         };
     }

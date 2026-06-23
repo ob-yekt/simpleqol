@@ -20,52 +20,77 @@ public class ConfigManager {
     public static class Config {
         // BIOME REPLACEMENTS
         public Map<String, String> biomeReplacements = new HashMap<>();
+
         // TIME
         public long dayTicks = 24000;
         public long nightTicks = 12000;
         public long tickCounter = 0;
+
         // MISC
         public boolean endermanGriefing = false;
         public boolean sweetberrybushDamage = false;
-        // PHANTOMS
-        public int overworldPhantomSpawnWeight = 2; // 0 = disabled (doesn't disable vanilla spawning), 5 = witch weight, 10 = enderman, 100 = zombie
-        public int endPhantomSpawnWeight = 1; // Default = 1; 0 disables
+
+        // PHANTOM SPAWN WEIGHTS
+        public int overworldPhantomSpawnWeight = 8;
+        public int endPhantomSpawnWeight = 1;
+
         // PHANTOM PACK SIZE
         public int overworldPhantomMinPackSize = 1;
-        public int overworldPhantomMaxPackSize = 2;
+        public int overworldPhantomMaxPackSize = 4;
         public int endPhantomMinPackSize = 1;
         public int endPhantomMaxPackSize = 1;
-        // doInsomnia
-        public boolean doInsomnia = false; // Gamerule doInsomnia adjusts phantom spawning when the player has not slept
-        // TORCHFLOWER
-        public int torchflowerBrightness = 14;
-        public int pottedTorchflowerBrightness = 14;
-        public int torchflowerStage0Brightness = 1;
-        public int torchflowerStage1Brightness = 7;
-        public int torchflowerStage2Brightness = 14;
-        // EYEBLOSSOM
-        public int openEyeblossomBrightness = 4;
-        public int closedEyeblossomBrightness = 2;
-        public int pottedOpenEyeblossomBrightness = 4;
-        public int pottedClosedEyeblossomBrightness = 2;
-        // PITCHER PLANT
-        public int pitcherPlantBrightness = 9;
-        public int pitcherCropStage0Brightness = 1;
-        public int pitcherCropStage1Brightness = 2;
-        public int pitcherCropStage2Brightness = 3;
-        public int pitcherCropStage3Brightness = 6;
-        public int pitcherCropStage4Brightness = 9;
-        // LEAF DECAY
-        public float leafDecayMultiplier = 5.0f;
-    }
 
-    public static void populateDefaults() {
-        config.biomeReplacements.put("minecraft:stony_shore", "minecraft:beach");
-        config.biomeReplacements.put("minecraft:windswept_gravelly_hills", "minecraft:windswept_hills");
-        // Add more defaults as needed
+        // doInsomnia
+        public boolean doInsomnia = false;
+
+        // ELYTRA
+        public boolean doVanillaElytra = false;
+        public float customElytraFlyingSpeed = 0.012f;
+
+        // LEAF DECAY
+        public int leafDecayMultiplier = 3;
+
+        // CUSTOM COMPOSTABLES (item id -> composting chance, 0.0-1.0)
+        public Map<String, Float> compostableItems = new HashMap<>();
+
+        // LEAF LITTER
+        public float leafLitterMultiplier = 0.25f;
     }
 
     private static Config config = new Config();
+
+    public static void populateDefaults() {
+        if (config.compostableItems == null) {
+            config.compostableItems = new HashMap<>();
+        }
+
+        // Rotten Flesh & Poisonous Potato
+        config.compostableItems.put("minecraft:rotten_flesh", 0.5f);
+        config.compostableItems.put("minecraft:poisonous_potato", 0.65f);
+
+        // Fish
+        config.compostableItems.put("minecraft:cod", 0.5f);
+        config.compostableItems.put("minecraft:salmon", 0.5f);
+        config.compostableItems.put("minecraft:tropical_fish", 0.5f);
+        config.compostableItems.put("minecraft:pufferfish", 0.5f);
+        config.compostableItems.put("minecraft:cooked_cod", 0.65f);
+        config.compostableItems.put("minecraft:cooked_salmon", 0.65f);
+
+        // Meats
+        config.compostableItems.put("minecraft:beef", 0.5f);
+        config.compostableItems.put("minecraft:porkchop", 0.5f);
+        config.compostableItems.put("minecraft:chicken", 0.5f);
+        config.compostableItems.put("minecraft:mutton", 0.5f);
+        config.compostableItems.put("minecraft:rabbit", 0.5f);
+        config.compostableItems.put("minecraft:cooked_beef", 0.65f);
+        config.compostableItems.put("minecraft:cooked_porkchop", 0.65f);
+        config.compostableItems.put("minecraft:cooked_chicken", 0.65f);
+        config.compostableItems.put("minecraft:cooked_mutton", 0.65f);
+        config.compostableItems.put("minecraft:cooked_rabbit", 0.65f);
+
+        // Eggs
+        config.compostableItems.put("minecraft:egg", 0.65f);
+    }
 
     public static void load() {
         boolean isFirstGeneration = !Files.exists(CONFIG_PATH);
@@ -75,28 +100,11 @@ public class ConfigManager {
                 Config loadedConfig = GSON.fromJson(reader, Config.class);
                 if (loadedConfig != null) {
                     config = loadedConfig;
-
-                    // Sanitize values
-                    if (config.tickCounter < 0) config.tickCounter = 0;
-                    if (config.overworldPhantomSpawnWeight < 0) config.overworldPhantomSpawnWeight = 0;
-                    if (config.endPhantomSpawnWeight < 0) config.endPhantomSpawnWeight = 0;
-                    if (config.overworldPhantomMinPackSize < 1) config.overworldPhantomMinPackSize = 1;
-                    if (config.overworldPhantomMaxPackSize < config.overworldPhantomMinPackSize) {
-                        config.overworldPhantomMaxPackSize = config.overworldPhantomMinPackSize;
-                    }
-                    if (config.endPhantomMinPackSize < 1) config.endPhantomMinPackSize = 1;
-                    if (config.endPhantomMaxPackSize < config.endPhantomMinPackSize) {
-                        config.endPhantomMaxPackSize = config.endPhantomMinPackSize;
-                    }
-                    if (config.leafDecayMultiplier <= 0) config.leafDecayMultiplier = 1.0f; // Ensure positive, default to 1.0 if invalid
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        // Populate defaults only on first config generation
-        if (isFirstGeneration) {
+        } else {
             populateDefaults();
         }
 
@@ -140,22 +148,22 @@ public class ConfigManager {
         config.tickCounter = Math.max(0, ticks);
     }
 
-    // BIOMES
     public static Map<String, String> getBiomeReplacements() {
         return config.biomeReplacements;
     }
 
-    // ENDERMAN GRIEF
     public static boolean isEndermanGriefingAllowed() {
         return config.endermanGriefing;
     }
 
-    // SWEET BERRY BUSH DAMAGE
     public static boolean isSweetBerryBushDamageAllowed() {
         return config.sweetberrybushDamage;
     }
 
-    // PHANTOM CONFIGURATION
+    public static int getLeafDecayMultiplier() {
+        return config.leafDecayMultiplier;
+    }
+
     public static int getOverworldPhantomSpawnWeight() {
         return config.overworldPhantomSpawnWeight;
     }
@@ -165,90 +173,38 @@ public class ConfigManager {
     }
 
     public static int getOverworldPhantomMinPackSize() {
-        return Math.max(1, config.overworldPhantomMinPackSize);
+        return config.overworldPhantomMinPackSize;
     }
 
     public static int getOverworldPhantomMaxPackSize() {
-        return Math.max(getOverworldPhantomMinPackSize(), config.overworldPhantomMaxPackSize);
+        return config.overworldPhantomMaxPackSize;
     }
 
     public static int getEndPhantomMinPackSize() {
-        return Math.max(1, config.endPhantomMinPackSize);
+        return config.endPhantomMinPackSize;
     }
 
     public static int getEndPhantomMaxPackSize() {
-        return Math.max(getEndPhantomMinPackSize(), config.endPhantomMaxPackSize);
+        return config.endPhantomMaxPackSize;
     }
 
     public static boolean isDoInsomniaEnabled() {
         return config.doInsomnia;
     }
 
-    // TORCHFLOWER
-    public static int getTorchflowerBrightness() {
-        return config.torchflowerBrightness;
+    public static boolean isVanillaElytraEnabled() {
+        return config.doVanillaElytra;
     }
 
-    public static int getTorchflowerStage0Brightness() {
-        return config.torchflowerStage0Brightness;
+    public static float getCustomElytraFlyingSpeed() {
+        return config.customElytraFlyingSpeed;
     }
 
-    public static int getTorchflowerStage1Brightness() {
-        return config.torchflowerStage1Brightness;
+    public static Map<String, Float> getCompostableItems() {
+        return config.compostableItems;
     }
 
-    public static int getTorchflowerStage2Brightness() {
-        return config.torchflowerStage2Brightness;
-    }
-
-    public static int getPottedTorchflowerBrightness() {
-        return config.pottedTorchflowerBrightness;
-    }
-
-    // EYEBLOSSOM
-    public static int getOpenEyeblossomBrightness() {
-        return config.openEyeblossomBrightness;
-    }
-
-    public static int getClosedEyeblossomBrightness() {
-        return config.closedEyeblossomBrightness;
-    }
-
-    public static int getPottedOpenEyeblossomBrightness() {
-        return config.pottedOpenEyeblossomBrightness;
-    }
-
-    public static int getPottedClosedEyeblossomBrightness() {
-        return config.pottedClosedEyeblossomBrightness;
-    }
-
-    // PITCHER PLANT
-    public static int getPitcherPlantBrightness() {
-        return config.pitcherPlantBrightness;
-    }
-
-    public static int getPitcherCropStage0Brightness() {
-        return config.pitcherCropStage0Brightness;
-    }
-
-    public static int getPitcherCropStage1Brightness() {
-        return config.pitcherCropStage1Brightness;
-    }
-
-    public static int getPitcherCropStage2Brightness() {
-        return config.pitcherCropStage2Brightness;
-    }
-
-    public static int getPitcherCropStage3Brightness() {
-        return config.pitcherCropStage3Brightness;
-    }
-
-    public static int getPitcherCropStage4Brightness() {
-        return config.pitcherCropStage4Brightness;
-    }
-
-    // LEAF DECAY
-    public static float getLeafDecayMultiplier() {
-        return Math.max(0.001f, config.leafDecayMultiplier); // Ensure positive, use small value to avoid division by zero
+    public static float getLeafLitterMultiplier() {
+        return config.leafLitterMultiplier;
     }
 }
