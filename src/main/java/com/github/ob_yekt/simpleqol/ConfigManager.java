@@ -30,6 +30,19 @@ public class ConfigManager {
         public boolean endermanGriefing = false;
         public boolean sweetberrybushDamage = false;
 
+        // LEAF LITTER
+        public float leafLitterMultiplier = 0.25f;
+
+        // LEAF DECAY
+        public boolean instantLeafDecay = true;
+
+        // doInsomnia
+        public boolean doInsomnia = false;
+
+        // ELYTRA
+        public boolean doVanillaElytra = false;
+        public float customElytraFlyingSpeed = 0.012f;
+
         // PHANTOM SPAWN WEIGHTS
         public int overworldPhantomSpawnWeight = 8;
         public int endPhantomSpawnWeight = 1;
@@ -40,21 +53,8 @@ public class ConfigManager {
         public int endPhantomMinPackSize = 1;
         public int endPhantomMaxPackSize = 1;
 
-        // doInsomnia
-        public boolean doInsomnia = false;
-
-        // ELYTRA
-        public boolean doVanillaElytra = false;
-        public float customElytraFlyingSpeed = 0.012f;
-
-        // LEAF DECAY
-        public int leafDecayMultiplier = 3;
-
         // CUSTOM COMPOSTABLES (item id -> composting chance, 0.0-1.0)
         public Map<String, Float> compostableItems = new HashMap<>();
-
-        // LEAF LITTER
-        public float leafLitterMultiplier = 0.25f;
     }
 
     private static Config config = new Config();
@@ -160,8 +160,8 @@ public class ConfigManager {
         return config.sweetberrybushDamage;
     }
 
-    public static int getLeafDecayMultiplier() {
-        return config.leafDecayMultiplier;
+    public static boolean isInstantLeafDecayEnabled() {
+        return config.instantLeafDecay;
     }
 
     public static int getOverworldPhantomSpawnWeight() {

@@ -1,5 +1,6 @@
 package com.github.ob_yekt.simpleqol;
 
+import com.github.ob_yekt.simpleqol.elytra.ElytraFlightHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.gamerules.GameRules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +31,16 @@ public class simpleqol implements ModInitializer {
 
 		// Register server start callback to initialize TimeController with server instance
         // Custom day and night
-        ServerLifecycleEvents.SERVER_STARTED.register(TimeController::init);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            TimeController.init(server);
+
+            // Sync spawn_phantoms gamerule with config
+            server.getGameRules().set(
+                    GameRules.SPAWN_PHANTOMS,
+                    ConfigManager.isDoInsomniaEnabled(),
+                    server
+            );
+        });
 
 		// Commands
         CommandRegistrationCallback.EVENT.register(
@@ -84,7 +95,7 @@ public class simpleqol implements ModInitializer {
                 ElytraFlightHandler.tick(player);
             }
         });
-	}
+    }
 
     public static Identifier id(String path) {
         return Identifier.fromNamespaceAndPath(MOD_ID, path);

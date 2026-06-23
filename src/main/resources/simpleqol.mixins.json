@@ -3,6 +3,7 @@
   "package": "com.github.ob_yekt.simpleqol.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "ElytraFallDamageMixin",
     "EnderManMixin",
     "LeavesBlockMixin",
     "PlayerMixin",

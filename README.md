@@ -1,6 +1,6 @@
 # 🌟 simpleqol Mod Changelog and Feature List
 
-🛠️ A lightweight, server-side Minecraft mod focused on quality-of-life improvements.
+🛠️ A lightweight, server-side Minecraft mod focused on quality-of-life improvements and tweaks.
 
 🌐 **Fully server-side**: No client-side installation required.
 
@@ -17,6 +17,10 @@
 - **Blue Ice** can be crafted into **9 Packed Ice** ❄️.
 - **Block of Quartz** can be crafted into **9 Nether Quartz**
 
+### 🕊️ Custom Elytra (Enable/disable in config.json, flight speed adjustable in config.json)
+- **Elytra** has been overhauled: it now allows players to hover as in Creative mode.
+- **Elytra** no longer allows users to glide.
+- **Fireworks** no longer launch players that are using an **Elytra**.
 
 ### 🌞🌙 Custom Day and Night Lengths
 - Configure **day** and **night lengths** in real-life minutes ⏰.
@@ -27,8 +31,8 @@
   - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
     - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
 
-### 🍃 Custom Leaf Decay Multiplier
-- Leaves decay faster. This multiplier is adjustable in  config.json (1=vanilla).
+### 🍃 Trees & Leaves
+- Leaves decay instantly. Set to true/false in config.
 - Jungle Saplings now drop at the same rate as all other saplings (vanilla behavior was 2.5% for jungle, 5% for all other saplings).
 
 ### 🍂 Less Leaf Litter
@@ -64,6 +68,8 @@ or
 ```
 if you want to change all **Desert** biomes to **Tundra** biomes.
 
+### 🍓 Sweet Berry Bushes
+- **Berry bushes** no longer deal damage to **players**.
 
 ### 🌱 Composting (Add your own items + compost chance in the config.json)
 - **Poisonous potatoes** are now compostable 🥔.
@@ -83,18 +89,8 @@ if you want to change all **Desert** biomes to **Tundra** biomes.
 ### 🧳 Ender Chest
 - **Ender chests** drop as themselves regardless of the tool used, no silk touch required 🔨.
 
-### 🕊️ Elytra (Enable/disable in config.json)
-- **Elytra** function has been overhauled: it now allows players to hover as in Creative mode (without sprinting).
-- **Elytra** no longer allows users to glide.
-- **Fireworks** no longer launch players that are using an **Elytra**.
-
-
-
-### 🍓 Sweet Berry Bushes
-- **Berry bushes** no longer deal damage to **players**.
-
 ### 👻 Phantom Spawning
-- **Phantoms** spawn naturally in the Overworld and specific End biomes (End Highlands, End Midlands) 🏞️.
+- **Phantoms** spawn naturally in the Overworld and the End 🏞️.
     - Customizable spawn weight and pack sizes via config ⚙️.
     - Gamerule `doInsomnia` (spawns Phantoms when player has not slept) is set to **False** by default 😴.
 
