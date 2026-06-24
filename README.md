@@ -45,6 +45,10 @@
 - The Level 5 Enchanted Book trade has a stock level of 1.
 - After restocking, the Enchanted Book is randomized.
 
+### Natural Charged Creepers (Configurable in config.json)
+- Creepers have a 2% chance to spawn as charged.
+- Adjust float in config.json for more or less charged Creepers! (0 = no charged Creepers)
+
 ### 🍃 Trees & Leaves (Configurable in config.json)
 - Leaves decay instantly. Set to true/false in config.
 - Jungle Saplings now drop at the same rate as all other saplings (vanilla behavior was 2.5% for jungle, 5% for all other saplings).

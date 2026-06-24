@@ -3,6 +3,8 @@
   "package": "com.github.ob_yekt.simpleqol.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "CreeperAccessor",
+    "CreeperMixin",
     "ElytraFallDamageMixin",
     "EnderManMixin",
     "LeavesBlockMixin",

@@ -27,6 +27,7 @@ public class ConfigManager {
         public long tickCounter = 0;
 
         // MISC
+        public float chargedCreeperChance = 0.02f;
         public boolean endermanGriefing = false;
         public boolean sweetberrybushDamage = false;
         public boolean librarianRebalance = true;
@@ -151,6 +152,10 @@ public class ConfigManager {
 
     public static Map<String, String> getBiomeReplacements() {
         return config.biomeReplacements;
+    }
+
+    public static float getChargedCreeperChance() {
+        return config.chargedCreeperChance;
     }
 
     public static boolean isEndermanGriefingAllowed() {
