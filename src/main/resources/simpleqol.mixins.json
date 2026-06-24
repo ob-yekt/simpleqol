@@ -6,6 +6,7 @@
     "CreeperAccessor",
     "CreeperMixin",
     "ElytraFallDamageMixin",
+    "EnchantmentHelperMixin",
     "EnderManMixin",
     "LeavesBlockMixin",
     "PlayerMixin",

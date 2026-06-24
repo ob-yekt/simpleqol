@@ -32,6 +32,9 @@ public class ConfigManager {
         public boolean sweetberrybushDamage = false;
         public boolean librarianRebalance = true;
 
+        // ENCHANTING TABLE
+        public int maxEnchantingBookshelves = 12;
+
         // LEAF LITTER
         public float leafLitterMultiplier = 0.25f;
 
@@ -168,6 +171,10 @@ public class ConfigManager {
 
     public static boolean isLibrarianRebalanceEnabled() {
         return config.librarianRebalance;
+    }
+
+    public static int getMaxEnchantingBookshelves() {
+        return config.maxEnchantingBookshelves;
     }
 
     public static boolean isInstantLeafDecayEnabled() {

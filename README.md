@@ -31,6 +31,11 @@
 - Repairing items always costs 1 level
 - Logic for operations that combine enchantments remain unchanged
 
+### 🔮 Enchanting Table
+- Number of bookshelves that affect enchanting outcomes is customizable (defaults to 12, vanilla = 15)
+- 12 bookshelves allows for max **level 24-26 enchantments**
+- See the [**Minecraft Wiki**](https://minecraft.fandom.com/wiki/Enchanting_mechanics#Basic_mechanics) for more info on enchanting
+
 ### 🧳 Ender Chest
 - **Ender chests** drop as themselves regardless of the tool used, no silk touch required 🔨.
 
@@ -68,7 +73,6 @@
 
 ### 👁️‍🗨️ Enderman Behavior (Configurable in config.json)
 - **Enderman griefing** is disabled by default 🚫. (Configurable in config.json)
-
 
 ### 👻 Phantom Spawning (Configurable in config.json)
 - **Phantoms** spawn naturally in the Overworld and the End 🏞️.
