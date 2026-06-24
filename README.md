@@ -26,7 +26,7 @@
   - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
     - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
 
-### Anvil
+### 🔨 Anvil
 - Repairing items does not add prior work penalty
 - Repairing items always costs 1 level
 - Logic for operations that combine enchantments remain unchanged
@@ -39,13 +39,13 @@
 - **Elytra** no longer allows users to glide.
 - **Fireworks** no longer launch players that are using an **Elytra**.
 
-### Librarian Rebalance (Configurable in config.json)
+### 📚 Librarian Rebalance (Configurable in config.json)
 - Librarians **can no longer** offer Enchanted Books at levels 1, 2, 3, and 4.
 - Librarians **ALWAYS** offer an Enchanted Book at level 5.
 - The Level 5 Enchanted Book trade has a stock level of 1.
 - After restocking, the Enchanted Book is randomized.
 
-### Natural Charged Creepers (Configurable in config.json)
+### ⚡ Natural Charged Creepers (Configurable in config.json)
 - Creepers have a 2% chance to spawn as charged.
 - Adjust float in config.json for more or less charged Creepers! (0 = no charged Creepers)
 
