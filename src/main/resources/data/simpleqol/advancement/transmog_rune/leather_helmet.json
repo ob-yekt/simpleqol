@@ -1,0 +1,45 @@
+{
+  "parent": "simpleqol:transmog_root",
+  "criteria": {
+    "has_diamonds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond"
+            ],
+            "count": {
+              "min": 8
+            }
+          }
+        ]
+      }
+    },
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:leather_helmet"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_diamonds"
+    ],
+    [
+      "has_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "simpleqol:transmog_rune/leather_helmet"
+    ]
+  }
+}

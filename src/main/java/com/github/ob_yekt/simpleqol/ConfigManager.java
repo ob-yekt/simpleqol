@@ -32,6 +32,10 @@ public class ConfigManager {
         public boolean sweetberrybushDamage = false;
         public boolean librarianRebalance = true;
 
+        // TRANSMOGRIFICATION
+        public boolean enableTransmogrification = true;
+
+
         // ENCHANTING TABLE
         public int maxEnchantingBookshelves = 12;
 
@@ -181,7 +185,11 @@ public class ConfigManager {
         return config.instantLeafDecay;
     }
 
-    public static int getOverworldPhantomSpawnWeight() {
+    public static boolean isTransmogrificationEnabled() {
+        return config.enableTransmogrification;
+    }
+
+        public static int getOverworldPhantomSpawnWeight() {
         return config.overworldPhantomSpawnWeight;
     }
 

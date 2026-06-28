@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "DDD",
+    "DXD",
+    "DDD"
+  ],
+  "key": {
+    "D": "minecraft:diamond",
+    "X": "minecraft:golden_helmet"
+  },
+  "result": {
+    "id": "minecraft:knowledge_book",
+    "count": 1,
+    "components": {
+      "minecraft:custom_name": {
+        "text": "Golden Helmet Transmogrification Rune",
+        "italic": false
+      },
+      "minecraft:custom_data": {
+        "simpleqol_transmog": {
+          "disguise": "minecraft:golden_helmet"
+        }
+      }
+    }
+  }
+}
