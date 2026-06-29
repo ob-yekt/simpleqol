@@ -19,47 +19,31 @@
 
 ### 🌞🌙 Custom Day and Night Lengths
 - Configure **day** and **night lengths** in real-life minutes ⏰.
-  - Default: **30 minutes** (day), **10 minutes** (night).
-  - Commands:
-    - `/simpleqol daylength get/set <minutes>`: View or set day length ☀️.
-    - `/simpleqol nightlength get/set <minutes>`: View or set night length 🌑.
-  - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
-    - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
+    - Default: **30 minutes** (day), **10 minutes** (night).
+    - Commands:
+        - `/simpleqol daylength get/set <minutes>`: View or set day length ☀️.
+        - `/simpleqol nightlength get/set <minutes>`: View or set night length 🌑.
+    - **Note**: Disables `daynightcycle` gamerule, which may affect mods relying on it ⚠️.
+        - Sleeping to skip nighttime and the `playersleepingpercentage` gamerule remain functional 😴.
 
 ### 🧙 Transmogrification
 
-Change the *look* of your gear without losing its stats.
+Change the *look* of your gear without losing its stats. 🗡🗡️
 
-**1. Craft a rune.** Surround a tool, weapon, or armor piece with 8 Diamonds in a Crafting Table to craft a 
-**Transmogrification Rune** of the item.
-
-**2. Apply it.** Put the rune in the smithing table's left slot and the item you want to reskin in the middle slot.
-The result keeps all of its original stats, durability, enchantments, and name.
-
-**3. Undo it.** Apply an item's own appearance rune to itself to revert it to its regular appearance.
-
-A rune only works on gear of the same kind: pickaxe runes on pickaxes, sword
-runes on swords, helmet runes on helmets, and so on. Spears and armor work the
-same way. A rune made from a plain Stick can only be applied to swords.
-
-Transmogrified gear show `(Transmogrified to X)` in their tooltips.
-
-## Toggle
-
-Set `enableTransmogrification` to `false` in `simpleqol_config.json` to turn
-the feature off. Existing runes and already-transmogrified gear are
-unaffected, this only prevents new ones from being made.
-
-## Notes for server admins
-
-- Fully server-side: no client mod required, vanilla clients connect fine.
-- The recipes show up in the recipe book once you have the ingredients in
-  inventory (8 Diamonds + the relevant item).
-- Covers all vanilla tools, swords, spears, and armor across every material,
-  plus the Stick easter egg.
+1. **Craft a rune.** Surround a tool, weapon, or armor piece with an **Echo Shard** to craft a **Transmogrification Rune** of the item.
+2. **Apply it.** Put the rune in the smithing table's left slot and the item you want to reskin in the middle slot. The result keeps all of its original stats, durability, enchantments, and name.
+- **Undoing a Transmog:** Apply an item's own appearance rune to itself to revert it to its regular appearance.
 
 
+- A rune only works on gear of the same kind: pickaxe runes on pickaxes, sword
+  runes on swords, helmet runes on helmets, and so on. Spears and armor work the
+  same way. A rune made from a plain Stick can only be applied to swords.
 
+- Transmogrified gear show `(Transmogrified to X)` in their tooltips.
+
+- Set `enableTransmogrification` to `false` in `simpleqol_config.json` to turn
+  the feature off. Existing runes and already-transmogrified gear are
+  unaffected, this only prevents new ones from being made.
 
 ### 🔨 Anvil
 - Repairing items does not add prior work penalty

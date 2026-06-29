@@ -1,15 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "pattern": [
-    "DDD",
-    "DXD",
-    "DDD"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:echo_shard",
+    "minecraft:wooden_spear"
   ],
-  "key": {
-    "D": "minecraft:diamond",
-    "X": "minecraft:wooden_spear"
-  },
   "result": {
     "id": "minecraft:knowledge_book",
     "count": 1,

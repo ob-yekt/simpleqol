@@ -107,6 +107,83 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                         .requires(Blocks.QUARTZ_BLOCK)
                         .unlockedBy(getHasName(Blocks.QUARTZ_BLOCK), has(Blocks.QUARTZ_BLOCK))
                         .save(this.output, "simpleqol:quartz_from_quartz_block");
+
+                // === Improved stair crafting recipes (6 stairs instead of 4) ===
+                addStairsRecipes();
+
+                // Stone / other stairs
+                addImprovedStairRecipe(Blocks.COBBLESTONE, Blocks.COBBLESTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.MOSSY_COBBLESTONE, Blocks.MOSSY_COBBLESTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.STONE, Blocks.STONE_STAIRS);
+                addImprovedStairRecipe(Blocks.BRICKS, Blocks.BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.MUD_BRICKS, Blocks.MUD_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.SANDSTONE, Blocks.SANDSTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.SMOOTH_SANDSTONE, Blocks.SMOOTH_SANDSTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.RED_SANDSTONE, Blocks.RED_SANDSTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.SMOOTH_RED_SANDSTONE, Blocks.SMOOTH_RED_SANDSTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.QUARTZ_BLOCK, Blocks.QUARTZ_STAIRS);
+                addImprovedStairRecipe(Blocks.SMOOTH_QUARTZ, Blocks.SMOOTH_QUARTZ_STAIRS);
+                addImprovedStairRecipe(Blocks.NETHER_BRICKS, Blocks.NETHER_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.RED_NETHER_BRICKS, Blocks.RED_NETHER_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.PRISMARINE, Blocks.PRISMARINE_STAIRS);
+                addImprovedStairRecipe(Blocks.PRISMARINE_BRICKS, Blocks.PRISMARINE_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.DARK_PRISMARINE, Blocks.DARK_PRISMARINE_STAIRS);
+                addImprovedStairRecipe(Blocks.BLACKSTONE, Blocks.BLACKSTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_BLACKSTONE, Blocks.POLISHED_BLACKSTONE_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.END_STONE_BRICKS, Blocks.END_STONE_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.GRANITE, Blocks.GRANITE_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_GRANITE, Blocks.POLISHED_GRANITE_STAIRS);
+                addImprovedStairRecipe(Blocks.DIORITE, Blocks.DIORITE_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_DIORITE, Blocks.POLISHED_DIORITE_STAIRS);
+                addImprovedStairRecipe(Blocks.ANDESITE, Blocks.ANDESITE_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_ANDESITE, Blocks.POLISHED_ANDESITE_STAIRS);
+                addImprovedStairRecipe(Blocks.COBBLED_DEEPSLATE, Blocks.COBBLED_DEEPSLATE_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_DEEPSLATE, Blocks.POLISHED_DEEPSLATE_STAIRS);
+                addImprovedStairRecipe(Blocks.DEEPSLATE_BRICKS, Blocks.DEEPSLATE_BRICK_STAIRS);
+                addImprovedStairRecipe(Blocks.DEEPSLATE_TILES, Blocks.DEEPSLATE_TILE_STAIRS);
+                addImprovedStairRecipe(Blocks.TUFF, Blocks.TUFF_STAIRS);
+                addImprovedStairRecipe(Blocks.POLISHED_TUFF, Blocks.POLISHED_TUFF_STAIRS);
+                addImprovedStairRecipe(Blocks.TUFF_BRICKS, Blocks.TUFF_BRICK_STAIRS);
+            }
+
+            private void addStairsRecipes() {
+                ItemLike[][] woodRecipesLocal = {
+                        {null, null, null, null, Blocks.ACACIA_PLANKS, null, Blocks.ACACIA_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.BIRCH_PLANKS, null, Blocks.BIRCH_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.CHERRY_PLANKS, null, Blocks.CHERRY_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.CRIMSON_PLANKS, null, Blocks.CRIMSON_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.DARK_OAK_PLANKS, null, Blocks.DARK_OAK_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.JUNGLE_PLANKS, null, Blocks.JUNGLE_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.MANGROVE_PLANKS, null, Blocks.MANGROVE_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.OAK_PLANKS, null, Blocks.OAK_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.PALE_OAK_PLANKS, null, Blocks.PALE_OAK_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.SPRUCE_PLANKS, null, Blocks.SPRUCE_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.WARPED_PLANKS, null, Blocks.WARPED_STAIRS, null, null, null, null, null, null}
+                };
+
+                for (ItemLike[] recipe : woodRecipesLocal) {
+                    ItemLike planks = recipe[4];
+                    ItemLike stairs = recipe[6];
+
+                    shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 6)
+                            .pattern("#  ")
+                            .pattern("## ")
+                            .pattern("###")
+                            .define('#', planks)
+                            .unlockedBy(getHasName(planks), has(planks))
+                            .save(this.output);   // No custom path — uses default vanilla ID
+                }
+            }
+
+            private void addImprovedStairRecipe(ItemLike input, ItemLike stairs) {
+                shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 6)
+                        .pattern("#  ")
+                        .pattern("## ")
+                        .pattern("###")
+                        .define('#', input)
+                        .unlockedBy(getHasName(input), has(input))
+                        .save(this.output);   // No custom path — uses default vanilla ID
             }
         };
     }

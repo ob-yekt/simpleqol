@@ -1,10 +1,14 @@
 package com.github.ob_yekt.simpleqol.mixin;
 
 import com.github.ob_yekt.simpleqol.ConfigManager;
+import net.minecraft.core.Holder;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.levelgen.Heightmap;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -37,6 +41,12 @@ public class SpawnPlacementsMixin {
                     Heightmap.Types.MOTION_BLOCKING,
                     (entityType, world, spawnReason, pos, random) -> {
                         if (world.getDifficulty() == Difficulty.PEACEFUL) return false;
+
+                        // --- Biome Guardrails ---
+                        Holder<@NotNull Biome> biomeHolder = world.getBiome(pos);
+                        if (biomeHolder.is(Biomes.MUSHROOM_FIELDS) || biomeHolder.is(Biomes.DEEP_DARK)) {
+                            return false;
+                        }
 
                         // If we are in the End, skip the light level checks entirely
                         if (world.getLevel().dimension() == net.minecraft.world.level.Level.END) {

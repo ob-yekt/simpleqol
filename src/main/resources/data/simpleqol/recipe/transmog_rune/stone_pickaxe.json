@@ -1,15 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "pattern": [
-    "DDD",
-    "DXD",
-    "DDD"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:echo_shard",
+    "minecraft:stone_pickaxe"
   ],
-  "key": {
-    "D": "minecraft:diamond",
-    "X": "minecraft:stone_pickaxe"
-  },
   "result": {
     "id": "minecraft:knowledge_book",
     "count": 1,

@@ -1,15 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "pattern": [
-    "DDD",
-    "DXD",
-    "DDD"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:echo_shard",
+    "minecraft:iron_helmet"
   ],
-  "key": {
-    "D": "minecraft:diamond",
-    "X": "minecraft:iron_helmet"
-  },
   "result": {
     "id": "minecraft:knowledge_book",
     "count": 1,

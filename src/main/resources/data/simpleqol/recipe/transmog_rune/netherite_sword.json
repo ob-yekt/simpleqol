@@ -1,15 +1,9 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "category": "misc",
-  "pattern": [
-    "DDD",
-    "DXD",
-    "DDD"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:echo_shard",
+    "minecraft:netherite_sword"
   ],
-  "key": {
-    "D": "minecraft:diamond",
-    "X": "minecraft:netherite_sword"
-  },
   "result": {
     "id": "minecraft:knowledge_book",
     "count": 1,
