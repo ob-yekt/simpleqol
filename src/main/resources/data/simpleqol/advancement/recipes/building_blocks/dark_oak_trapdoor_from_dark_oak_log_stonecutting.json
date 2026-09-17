@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:dark_oak_trapdoor_from_dark_oak_log_stonecutting"
+        "recipes": "simpleqol:dark_oak_trapdoor_from_dark_oak_log_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

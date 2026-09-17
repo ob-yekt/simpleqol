@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:quartz_from_quartz_block"
+        "recipes": "simpleqol:quartz_from_quartz_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

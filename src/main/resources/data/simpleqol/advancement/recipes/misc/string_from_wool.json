@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:string_from_wool"
+        "recipes": "simpleqol:string_from_wool"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

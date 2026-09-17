@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:stick_from_warped_planks_stonecutting"
+        "recipes": "simpleqol:stick_from_warped_planks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:birch_slab_from_birch_planks_stonecutting"
+        "recipes": "simpleqol:birch_slab_from_birch_planks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

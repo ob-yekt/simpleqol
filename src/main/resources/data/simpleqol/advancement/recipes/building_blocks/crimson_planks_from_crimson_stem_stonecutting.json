@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:crimson_planks_from_crimson_stem_stonecutting"
+        "recipes": "simpleqol:crimson_planks_from_crimson_stem_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

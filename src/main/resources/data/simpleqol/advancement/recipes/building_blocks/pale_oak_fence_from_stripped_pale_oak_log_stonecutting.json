@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:pale_oak_fence_from_stripped_pale_oak_log_stonecutting"
+        "recipes": "simpleqol:pale_oak_fence_from_stripped_pale_oak_log_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

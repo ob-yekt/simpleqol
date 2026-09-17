@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:pale_oak_shelf_from_stripped_pale_oak_wood_stonecutting"
+        "recipes": "simpleqol:pale_oak_shelf_from_stripped_pale_oak_wood_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

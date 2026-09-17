@@ -2,14 +2,16 @@ package com.github.ob_yekt.simpleqol;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +24,8 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup, RecipeOutput exporter) {
-        return new RecipeProvider(registryLookup, exporter) {
+    protected @NotNull RecipeProvider createRecipeProvider(HolderLookup.Provider registryLookup, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new RecipeProvider(recipes, advancements) {
             @Override
             public void buildRecipes() {
                 // Wood recipes for all wood types - includes logs, wood, stripped variants, signs, and shelves
@@ -38,6 +40,7 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                         {Blocks.MANGROVE_LOG, Blocks.MANGROVE_WOOD, Blocks.STRIPPED_MANGROVE_LOG, Blocks.STRIPPED_MANGROVE_WOOD, Blocks.MANGROVE_PLANKS, Blocks.MANGROVE_SLAB, Blocks.MANGROVE_STAIRS, Blocks.MANGROVE_FENCE, Blocks.MANGROVE_FENCE_GATE, Blocks.MANGROVE_DOOR, Blocks.MANGROVE_TRAPDOOR, Items.MANGROVE_SIGN, Items.MANGROVE_SHELF},
                         {Blocks.OAK_LOG, Blocks.OAK_WOOD, Blocks.STRIPPED_OAK_LOG, Blocks.STRIPPED_OAK_WOOD, Blocks.OAK_PLANKS, Blocks.OAK_SLAB, Blocks.OAK_STAIRS, Blocks.OAK_FENCE, Blocks.OAK_FENCE_GATE, Blocks.OAK_DOOR, Blocks.OAK_TRAPDOOR, Items.OAK_SIGN, Items.OAK_SHELF},
                         {Blocks.PALE_OAK_LOG, Blocks.PALE_OAK_WOOD, Blocks.STRIPPED_PALE_OAK_LOG, Blocks.STRIPPED_PALE_OAK_WOOD, Blocks.PALE_OAK_PLANKS, Blocks.PALE_OAK_SLAB, Blocks.PALE_OAK_STAIRS, Blocks.PALE_OAK_FENCE, Blocks.PALE_OAK_FENCE_GATE, Blocks.PALE_OAK_DOOR, Blocks.PALE_OAK_TRAPDOOR, Items.PALE_OAK_SIGN, Items.PALE_OAK_SHELF},
+                        {Blocks.POPLAR_LOG, Blocks.POPLAR_WOOD, Blocks.STRIPPED_POPLAR_LOG, Blocks.STRIPPED_POPLAR_WOOD, Blocks.POPLAR_PLANKS, Blocks.POPLAR_SLAB, Blocks.POPLAR_STAIRS, Blocks.POPLAR_FENCE, Blocks.POPLAR_FENCE_GATE, Blocks.POPLAR_DOOR, Blocks.POPLAR_TRAPDOOR, Items.POPLAR_SIGN, Items.POPLAR_SHELF},
                         {Blocks.SPRUCE_LOG, Blocks.SPRUCE_WOOD, Blocks.STRIPPED_SPRUCE_LOG, Blocks.STRIPPED_SPRUCE_WOOD, Blocks.SPRUCE_PLANKS, Blocks.SPRUCE_SLAB, Blocks.SPRUCE_STAIRS, Blocks.SPRUCE_FENCE, Blocks.SPRUCE_FENCE_GATE, Blocks.SPRUCE_DOOR, Blocks.SPRUCE_TRAPDOOR, Items.SPRUCE_SIGN, Items.SPRUCE_SHELF},
                         {Blocks.WARPED_STEM, Blocks.WARPED_HYPHAE, Blocks.STRIPPED_WARPED_STEM, Blocks.STRIPPED_WARPED_HYPHAE, Blocks.WARPED_PLANKS, Blocks.WARPED_SLAB, Blocks.WARPED_STAIRS, Blocks.WARPED_FENCE, Blocks.WARPED_FENCE_GATE, Blocks.WARPED_DOOR, Blocks.WARPED_TRAPDOOR, Items.WARPED_SIGN, Items.WARPED_SHELF}
                 };
@@ -158,6 +161,7 @@ public class simpleqolRecipeGenerator extends FabricRecipeProvider {
                         {null, null, null, null, Blocks.MANGROVE_PLANKS, null, Blocks.MANGROVE_STAIRS, null, null, null, null, null, null},
                         {null, null, null, null, Blocks.OAK_PLANKS, null, Blocks.OAK_STAIRS, null, null, null, null, null, null},
                         {null, null, null, null, Blocks.PALE_OAK_PLANKS, null, Blocks.PALE_OAK_STAIRS, null, null, null, null, null, null},
+                        {null, null, null, null, Blocks.POPLAR_PLANKS, null, Blocks.POPLAR_STAIRS, null, null, null, null, null, null},
                         {null, null, null, null, Blocks.SPRUCE_PLANKS, null, Blocks.SPRUCE_STAIRS, null, null, null, null, null, null},
                         {null, null, null, null, Blocks.WARPED_PLANKS, null, Blocks.WARPED_STAIRS, null, null, null, null, null, null}
                 };

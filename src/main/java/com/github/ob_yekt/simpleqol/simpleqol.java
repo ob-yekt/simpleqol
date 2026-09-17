@@ -7,12 +7,17 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.registry.CompostableRegistry;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Compostable;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.gamerules.GameRules;
 import org.slf4j.Logger;
@@ -83,8 +88,12 @@ public class simpleqol implements ModInitializer {
             if (identifier != null) {
                 Item item = BuiltInRegistries.ITEM.getValue(identifier);
 
-                if (item != Items.AIR) {
-                    CompostableRegistry.INSTANCE.add(item, chance);
+                if (item != Items.AIR && chance > 0) {
+                    // Composting is a data component since 26.3; it can only reference a
+                    // registered context_int_provider, so snap to the nearest vanilla chance tier.
+                    Compostable compostable = new Compostable(nearestCompostTier(chance));
+                    DefaultItemComponentEvents.MODIFY.register(context ->
+                            context.modify(item, builder -> builder.set(DataComponents.COMPOSTABLE, compostable)));
                 }
             }
         });
@@ -95,6 +104,14 @@ public class simpleqol implements ModInitializer {
                 ElytraFlightHandler.tick(player);
             }
         });
+    }
+
+    private static ResourceKey<ContextIntProvider> nearestCompostTier(float chance) {
+        if (chance < 0.4f) return ContextIntProviders.COMPOSTABLE_LOW;          // 0.30
+        if (chance < 0.575f) return ContextIntProviders.COMPOSTABLE_LOW_MEDIUM; // 0.50
+        if (chance < 0.75f) return ContextIntProviders.COMPOSTABLE_MEDIUM;      // 0.65
+        if (chance < 0.925f) return ContextIntProviders.COMPOSTABLE_MEDIUM_HIGH; // 0.85
+        return ContextIntProviders.COMPOSTABLE_ALWAYS_ADD_ONE;                  // 1.00
     }
 
     public static Identifier id(String path) {

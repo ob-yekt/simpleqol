@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "minecraft:poplar_planks",
+  "result": {
+    "id": "minecraft:poplar_stairs"
+  }
+}

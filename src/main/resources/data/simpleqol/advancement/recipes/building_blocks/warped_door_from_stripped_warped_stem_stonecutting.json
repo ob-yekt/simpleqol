@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:warped_door_from_stripped_warped_stem_stonecutting"
+        "recipes": "simpleqol:warped_door_from_stripped_warped_stem_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -79,7 +79,7 @@ public class TimeController implements ServerTickEvents.StartTick {
         if (!initialized && server.getAllLevels().iterator().hasNext()) {
             // Initialize tickCounter to match the reference clock's current time directly
             resolveReferenceClock(server).ifPresent(clock -> {
-                long worldTime = server.clockManager().getTotalTicks(clock);
+                long worldTime = server.clockManager().getInstance(clock).totalTicks();
                 tickCounter = Math.max(0, worldTime);
                 LOGGER.info("First tick sync: tickCounter: {} for worldTime: {}", tickCounter, worldTime);
             });
@@ -96,7 +96,7 @@ public class TimeController implements ServerTickEvents.StartTick {
         // Check if world time was changed (e.g., by /time set command)
         Optional<Holder<WorldClock>> reference = resolveReferenceClock(server);
         if (reference.isPresent()) {
-            long worldTime = server.clockManager().getTotalTicks(reference.get());
+            long worldTime = server.clockManager().getInstance(reference.get()).totalTicks();
             if (Math.abs(worldTime - visualTime) > 5) { // Allow small discrepancies
                 // Sync tickCounter to match the new world time
                 syncTickCounterToWorldTime(worldTime);
@@ -155,7 +155,7 @@ public class TimeController implements ServerTickEvents.StartTick {
 
         // Recalculate tickCounter to maintain current world time
         resolveReferenceClock(server).ifPresent(clock -> {
-            long worldTime = server.clockManager().getTotalTicks(clock);
+            long worldTime = server.clockManager().getInstance(clock).totalTicks();
             syncTickCounterToWorldTime(worldTime);
             LOGGER.info("Set dayTicks: {}, recalculated tickCounter: {} for worldTime: {}", dayTicks, tickCounter, worldTime);
         });
@@ -172,7 +172,7 @@ public class TimeController implements ServerTickEvents.StartTick {
 
         // Recalculate tickCounter to maintain current world time
         resolveReferenceClock(server).ifPresent(clock -> {
-            long worldTime = server.clockManager().getTotalTicks(clock);
+            long worldTime = server.clockManager().getInstance(clock).totalTicks();
             syncTickCounterToWorldTime(worldTime);
             LOGGER.info("Set nightTicks: {}, recalculated tickCounter: {} for worldTime: {}", nightTicks, tickCounter, worldTime);
         });

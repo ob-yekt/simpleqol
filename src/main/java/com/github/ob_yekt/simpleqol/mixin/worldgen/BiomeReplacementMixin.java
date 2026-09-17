@@ -19,14 +19,14 @@ import java.util.Optional;
 @Mixin(MultiNoiseBiomeSource.class)
 public class BiomeReplacementMixin {
 
-    // getNoiseBiome is overloaded (there's also a Climate.TargetPoint variant), so we
-    // need the full descriptor to target the (int, int, int, Climate.Sampler) overload.
+    // Since 26.3 every BiomeResolver (plain and per-chunk) funnels into the
+    // Climate.TargetPoint overload, so hooking it covers all biome lookups.
     @Inject(
-            method = "getNoiseBiome(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;",
+            method = "getNoiseBiome(Lnet/minecraft/world/level/biome/Climate$TargetPoint;)Lnet/minecraft/core/Holder;",
             at = @At("RETURN"),
             cancellable = true
     )
-    private void replaceBiomes(int quartX, int quartY, int quartZ, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir) {
+    private void replaceBiomes(Climate.TargetPoint target, CallbackInfoReturnable<Holder<Biome>> cir) {
         Holder<Biome> originalBiome = cir.getReturnValue();
         if (originalBiome == null) {
             return;

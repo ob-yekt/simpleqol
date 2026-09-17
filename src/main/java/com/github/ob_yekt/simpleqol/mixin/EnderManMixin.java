@@ -1,13 +1,13 @@
 package com.github.ob_yekt.simpleqol.mixin;
 
 import com.github.ob_yekt.simpleqol.ConfigManager;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EnderMan.class)
+@Mixin(Enderman.class)
 public abstract class EnderManMixin {
 
     @Inject(method = "registerGoals", at = @At("TAIL"))

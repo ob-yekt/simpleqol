@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "simpleqol:mangrove_trapdoor_from_mangrove_log_stonecutting"
+        "recipes": "simpleqol:mangrove_trapdoor_from_mangrove_log_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_poplar_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stripped_poplar_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipes": "simpleqol:poplar_sign_from_stripped_poplar_wood_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_poplar_wood"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "simpleqol:poplar_sign_from_stripped_poplar_wood_stonecutting"
+    ]
+  }
+}

@@ -36,11 +36,11 @@ public abstract class AbstractVillagerMixin {
             method = "addOffersFromTradeSet",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/trading/TradeSet;getTrades()Lnet/minecraft/core/HolderSet;"
+                    target = "Lnet/minecraft/world/item/trading/TradeSet;trades()Lnet/minecraft/core/HolderSet;"
             )
     )
     private HolderSet<VillagerTrade> simpleqol$filterLibrarianBookTrades(TradeSet tradeSet) {
-        HolderSet<VillagerTrade> trades = tradeSet.getTrades();
+        HolderSet<VillagerTrade> trades = tradeSet.trades();
 
         if (!ConfigManager.isLibrarianRebalanceEnabled()) return trades;
 
